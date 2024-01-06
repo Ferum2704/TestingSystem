@@ -1,6 +1,5 @@
-﻿using Domain;
+﻿using Application.Identitity;
 using Domain.Entities;
-using Domain.Entities.DomainEntities;
 using Infrastructure.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -10,7 +9,10 @@ namespace Infrastructure
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
 
         public DbSet<Teacher> Teachers { get; set; }
 
@@ -46,32 +48,33 @@ namespace Infrastructure
             SeedIdentityData(modelBuilder);
         }
 
-        private void SeedIdentityData(ModelBuilder modelBuilder)
+        private static void SeedIdentityData(ModelBuilder modelBuilder)
         {
             var adminRoleId = Guid.NewGuid();
             var adminId = Guid.NewGuid();
 
             modelBuilder.Entity<ApplicationRole>()
-                .HasData(new ApplicationRole
+                .HasData(
+                    new ApplicationRole
                 {
                     Id = adminRoleId,
-                    Name = DomainUserRoles.Admin,
+                    Name = ApplicationUserRole.Admin.ToString(),
                     ConcurrencyStamp = "1",
-                    NormalizedName = DomainUserRoles.Admin,
+                    NormalizedName = ApplicationUserRole.Admin.ToString(),
                 },
-                new ApplicationRole
+                    new ApplicationRole
                 {
                     Id = Guid.NewGuid(),
-                    Name = DomainUserRoles.Teacher,
+                    Name = ApplicationUserRole.Teacher.ToString(),
                     ConcurrencyStamp = "2",
-                    NormalizedName = DomainUserRoles.Teacher,
+                    NormalizedName = ApplicationUserRole.Teacher.ToString(),
                 },
-                new ApplicationRole
+                    new ApplicationRole
                 {
                     Id = Guid.NewGuid(),
-                    Name = DomainUserRoles.Student,
+                    Name = ApplicationUserRole.Student.ToString(),
                     ConcurrencyStamp = "3",
-                    NormalizedName = DomainUserRoles.Student,
+                    NormalizedName = ApplicationUserRole.Student.ToString(),
                 });
 
             var hasher = new PasswordHasher<ApplicationUser>();

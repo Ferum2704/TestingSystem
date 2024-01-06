@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities.DomainEntities
+﻿namespace Domain.Entities
 {
     public class TestQuestion
     {

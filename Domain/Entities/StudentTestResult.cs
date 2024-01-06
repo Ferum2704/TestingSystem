@@ -1,6 +1,6 @@
 ﻿using Domain.Enums;
 
-namespace Domain.Entities.DomainEntities
+namespace Domain.Entities
 {
     public class StudentTestResult
     {

@@ -1,6 +1,6 @@
 ﻿using Domain.Enums;
 
-namespace Domain.Entities
+namespace Domain.Entities.DomainEntities
 {
     public class Question
     {

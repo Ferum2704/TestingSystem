@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Entities.DomainEntities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -13,13 +13,15 @@ namespace Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<Topic> builder)
         {
+            builder.ToTable(nameof(Topic));
+
             builder.HasKey(x => x.Id);
 
             builder
                 .HasMany(x => x.Tests)
                 .WithOne(x => x.Topic)
                 .HasForeignKey(x => x.TopicId)
-                .IsRequired();
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder
                 .HasMany(x => x.Questions)

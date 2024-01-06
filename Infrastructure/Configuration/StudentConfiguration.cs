@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Entities.DomainEntities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,7 +8,7 @@ namespace Infrastructure.Configuration
     {
         public void Configure(EntityTypeBuilder<Student> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.ToTable(nameof(Student));
 
             builder
                 .HasMany(x => x.Tests)

@@ -11,13 +11,13 @@ namespace Infrastructure.Migrations
         {
             migrationBuilder.Sql(
                 @"CREATE TRIGGER trg_DeleteQuestionsOnTopicDelete
-                    ON Topics
+                    ON Topic
                     AFTER DELETE
                     AS
                     BEGIN
                         SET NOCOUNT ON;
 
-                        DELETE FROM Questions
+                        DELETE FROM Question
                         WHERE TopicId IN (SELECT deleted.Id FROM deleted);
                     END;");
         }

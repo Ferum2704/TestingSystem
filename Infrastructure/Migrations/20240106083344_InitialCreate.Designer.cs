@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240106083344_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,29 +51,6 @@ namespace Infrastructure.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("65216587-6548-41ca-bcce-dc80fac21a66"),
-                            ConcurrencyStamp = "1",
-                            Name = "Admin",
-                            NormalizedName = "Admin"
-                        },
-                        new
-                        {
-                            Id = new Guid("29ff746b-a60d-4032-8af7-5fc73c2b29f8"),
-                            ConcurrencyStamp = "2",
-                            Name = "Teacher",
-                            NormalizedName = "Teacher"
-                        },
-                        new
-                        {
-                            Id = new Guid("e4834cbb-8f48-40b4-b1b2-6c4ff72bcd03"),
-                            ConcurrencyStamp = "3",
-                            Name = "Student",
-                            NormalizedName = "Student"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.ApplicationUser", b =>
@@ -137,22 +117,6 @@ namespace Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("fbc05411-351e-4e79-b971-2246fc3a9125"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "a2ed1afb-10ac-42de-ae45-07792381d0c9",
-                            Email = "admin@gmail.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "admin",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGX50lNBovSWsl6VmrY/ioUpfONHw4uvRZUZuUeJyfEbgS7Eh64O7KZQDaw6ySrnWA==",
-                            PhoneNumberConfirmed = false,
-                            TwoFactorEnabled = false,
-                            UserName = "admin"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.DomainEntities.DomainUser", b =>
@@ -435,13 +399,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("fbc05411-351e-4e79-b971-2246fc3a9125"),
-                            RoleId = new Guid("65216587-6548-41ca-bcce-dc80fac21a66")
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>

@@ -3,6 +3,7 @@ using Application.Identitity;
 using Domain.Entities;
 using Domain.Enums;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,17 +17,14 @@ namespace Infrastructure.Authentication
     {
         private readonly JwtOptions jwtOptions;
 
-        public JwtProvider(JwtOptions jwtOptions)
+        public JwtProvider(IOptions<JwtOptions> jwtOptions)
         {
-            this.jwtOptions = jwtOptions;
+            this.jwtOptions = jwtOptions.Value;
         }
 
         public string GetAccessToken(ApplicationUser user, string userRole)
         {
-            List<Claim> claims = new List<Claim>();
-
-            claims.Add(new (ClaimTypes.Name, user.UserName));
-            claims.Add(new (ClaimTypes.Role, userRole));
+            List<Claim> claims = [new (ClaimTypes.Name, user.UserName), new (ClaimTypes.Role, userRole)];
 
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey));
             _ = int.TryParse(jwtOptions.AccessTokenExpirationTimeInMinutes, out int tokenExpirationTimeInMinutes);

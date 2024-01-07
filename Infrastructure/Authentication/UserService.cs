@@ -1,11 +1,8 @@
 ﻿using Application.Abstractions;
 using Application.Identitity;
 using Application.ViewModels;
-using Azure;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace Infrastructure.Authentication
 {

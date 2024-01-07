@@ -17,7 +17,6 @@ namespace Infrastructure.Configuration
                 .WithOne(x => x.Subject)
                 .HasForeignKey(x => x.SubjectId)
                 .IsRequired();
-                
         }
     }
 }

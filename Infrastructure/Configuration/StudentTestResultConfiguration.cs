@@ -13,7 +13,7 @@ namespace Infrastructure.Configuration
             builder.HasKey(x => x.Id);
 
             builder.HasOne(x => x.Student)
-                   .WithMany(x => x.TestResults) 
+                   .WithMany(x => x.TestResults)
                    .HasForeignKey(x => x.StudentId)
                    .IsRequired();
 

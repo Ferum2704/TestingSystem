@@ -1,8 +1,9 @@
 ﻿using Domain.Enums;
+using Domain.Interfaces;
 
 namespace Domain.Entities
 {
-    public class Question
+    public class Question : IEntity
     {
         public Guid Id { get; set; }
 

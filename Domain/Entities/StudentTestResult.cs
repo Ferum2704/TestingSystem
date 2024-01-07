@@ -1,8 +1,9 @@
 ﻿using Domain.Enums;
+using Domain.Interfaces;
 
 namespace Domain.Entities
 {
-    public class StudentTestResult
+    public class StudentTestResult : IEntity
     {
         public Guid Id { get; set; }
 

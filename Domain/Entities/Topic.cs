@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities
+﻿using Domain.Interfaces;
+
+namespace Domain.Entities
 {
-    public class Topic
+    public class Topic : IEntity
     {
         public Guid Id { get; set; }
 

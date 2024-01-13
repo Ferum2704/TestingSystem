@@ -7,13 +7,13 @@ namespace Domain.Entities
     {
         public Guid Id { get; set; }
 
-        public Guid StudentId { get; set; }
+        public Guid StudentAttemptId { get; set; }
 
-        public Student Student { get; set; }
+        public StudentTestAttempt StudentAttempt { get; set; }
 
-        public Guid TestQuestionId { get; set; }
+        public Guid QuestionId { get; set; }
 
-        public TestQuestion TestQuestion { get; set; }
+        public Question Question { get; set; }
 
         public AnswerOption Answer { get; set; }
 

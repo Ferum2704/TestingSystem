@@ -12,14 +12,15 @@ namespace Infrastructure.Configuration
 
             builder.HasKey(x => x.Id);
 
-            builder.HasOne(x => x.Student)
-                   .WithMany(x => x.TestResults)
-                   .HasForeignKey(x => x.StudentId)
+            builder.HasOne(x => x.StudentAttempt)
+                   .WithMany(x => x.Results)
+                   .HasForeignKey(x => x.StudentAttemptId)
+                   .OnDelete(DeleteBehavior.NoAction)
                    .IsRequired();
 
-            builder.HasOne(x => x.TestQuestion)
+            builder.HasOne(x => x.Question)
                    .WithMany(x => x.Results)
-                   .HasForeignKey(x => x.TestQuestionId)
+                   .HasForeignKey(x => x.QuestionId)
                    .IsRequired();
 
             builder

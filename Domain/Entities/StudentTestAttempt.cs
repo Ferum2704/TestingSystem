@@ -14,6 +14,8 @@ namespace Domain.Entities
 
         public Test Test { get; set; }
 
-        public int NumberOfAttemts { get; set; }
+        public int NumberOfAttemt { get; set; }
+
+        public ICollection<StudentTestResult> Results { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240113130539_BindTestResultToTestAttempt")]
+    partial class BindTestResultToTestAttempt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,6 +162,18 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("OptionA")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OptionB")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OptionC")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -210,17 +225,17 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("QuestionId")
+                    b.Property<Guid>("StudentAttemptId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("StudentAttemptId")
+                    b.Property<Guid>("TestQuestionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("QuestionId");
-
                     b.HasIndex("StudentAttemptId");
+
+                    b.HasIndex("TestQuestionId");
 
                     b.ToTable("StudentTestResult", (string)null);
                 });
@@ -276,12 +291,17 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("QuestionId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("StudentTestAttemptId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("TestId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("QuestionId");
+
+                    b.HasIndex("StudentTestAttemptId");
 
                     b.HasIndex("TestId");
 
@@ -469,21 +489,21 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.StudentTestResult", b =>
                 {
-                    b.HasOne("Domain.Entities.Question", "Question")
-                        .WithMany("Results")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.StudentTestAttempt", "StudentAttempt")
                         .WithMany("Results")
                         .HasForeignKey("StudentAttemptId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Question");
+                    b.HasOne("Domain.Entities.TestQuestion", "TestQuestion")
+                        .WithMany("Results")
+                        .HasForeignKey("TestQuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("StudentAttempt");
+
+                    b.Navigation("TestQuestion");
                 });
 
             modelBuilder.Entity("Domain.Entities.Subject", b =>
@@ -515,6 +535,10 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Domain.Entities.StudentTestAttempt", null)
+                        .WithMany("Questions")
+                        .HasForeignKey("StudentTestAttemptId");
 
                     b.HasOne("Domain.Entities.Question", "Question")
                         .WithMany("TestQuestions")
@@ -615,13 +639,13 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Question", b =>
                 {
-                    b.Navigation("Results");
-
                     b.Navigation("TestQuestions");
                 });
 
             modelBuilder.Entity("Domain.Entities.StudentTestAttempt", b =>
                 {
+                    b.Navigation("Questions");
+
                     b.Navigation("Results");
                 });
 
@@ -635,6 +659,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("StudentsAttempts");
 
                     b.Navigation("TestQuestions");
+                });
+
+            modelBuilder.Entity("Domain.Entities.TestQuestion", b =>
+                {
+                    b.Navigation("Results");
                 });
 
             modelBuilder.Entity("Domain.Entities.Topic", b =>

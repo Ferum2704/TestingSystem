@@ -11,12 +11,6 @@ namespace Domain.Entities
 
         public AnswerOption CorrectAnswer { get; set; }
 
-        public string OptionA { get; set; }
-
-        public string OptionB { get; set; }
-
-        public string OptionC { get; set; }
-
         public Guid TopicId { get; set; }
 
         public Topic Topic { get; set; }
@@ -24,5 +18,7 @@ namespace Domain.Entities
         public ICollection<Test> Tests { get; set; }
 
         public ICollection<TestQuestion> TestQuestions { get; set; }
+
+        public ICollection<StudentTestResult> Results { get; set; }
     }
 }

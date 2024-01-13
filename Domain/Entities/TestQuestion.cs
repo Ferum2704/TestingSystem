@@ -13,7 +13,5 @@ namespace Domain.Entities
         public Guid QuestionId { get; set; }
 
         public Question Question { get; set; }
-
-        public ICollection<StudentTestResult> Results { get; set; }
     }
 }

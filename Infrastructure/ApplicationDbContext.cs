@@ -45,7 +45,7 @@ namespace Infrastructure
             modelBuilder.ApplyConfiguration(new TestConfiguration());
             modelBuilder.ApplyConfiguration(new QuestionConfiguration());
             modelBuilder.ApplyConfiguration(new StudentTestResultConfiguration());
-            SeedIdentityData(modelBuilder);
+            //SeedIdentityData(modelBuilder);
         }
 
         private static void SeedIdentityData(ModelBuilder modelBuilder)

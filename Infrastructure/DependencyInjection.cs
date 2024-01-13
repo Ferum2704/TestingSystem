@@ -1,6 +1,8 @@
 ﻿using Application.Abstractions;
 using Domain.Entities;
+using Domain.Interfaces;
 using Infrastructure.Authentication;
+using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +39,7 @@ namespace Infrastructure
 
             services.AddTransient<IJwtProvider, JwtProvider>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             return services;
         }

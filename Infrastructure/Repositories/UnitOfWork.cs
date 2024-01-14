@@ -7,13 +7,20 @@ namespace Infrastructure.Repositories
     {
         private readonly ApplicationDbContext context;
 
-        private bool disposed = false;
+        private IGenericRepository<Teacher> teacherRepository;
         private IGenericRepository<Subject> subjectRepository;
         private IGenericRepository<Topic> topicRepository;
         private IGenericRepository<Test> testRepository;
         private IGenericRepository<Question> questionRepository;
         private IGenericRepository<Student> studentRepository;
         private IGenericRepository<StudentTestAttempt> studentTestAttemptRepository;
+
+        public UnitOfWork(ApplicationDbContext context)
+        {
+            this.context = context;
+        }
+
+        public IGenericRepository<Teacher> TeacherRepository => teacherRepository ??= new GenericRepository<Teacher>(context);
 
         public IGenericRepository<Subject> SubjectRepository => subjectRepository ??= new GenericRepository<Subject>(context);
 
@@ -26,24 +33,6 @@ namespace Infrastructure.Repositories
         public IGenericRepository<Student> StudentRepository => studentRepository ??= new GenericRepository<Student>(context);
 
         public IGenericRepository<StudentTestAttempt> StudentTestAttemptRepository => studentTestAttemptRepository ??= new GenericRepository<StudentTestAttempt>(context);
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    context.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
 
         public async Task SaveAsync()
         {

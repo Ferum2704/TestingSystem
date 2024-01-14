@@ -26,7 +26,7 @@ namespace Infrastructure.Repositories
             dbSet.AddRange(entities);
         }
 
-        public virtual IReadOnlyCollection<TEntity> Find(Expression<Func<TEntity, bool>> filter, List<string>? includeProperties = null)
+        public virtual async Task<IReadOnlyCollection<TEntity>> Find(Expression<Func<TEntity, bool>> filter, List<string>? includeProperties = null)
         {
             IQueryable<TEntity> query = dbSet;
 
@@ -38,10 +38,10 @@ namespace Infrastructure.Repositories
                 }
             }
 
-            return query.Where(filter).ToList();
+            return await query.Where(filter).AsNoTracking().ToListAsync();
         }
 
-        public virtual IReadOnlyCollection<TEntity> GetAll(List<string>? includeProperties = null)
+        public virtual async Task<IReadOnlyCollection<TEntity>> GetAll(List<string>? includeProperties = null)
         {
             IQueryable<TEntity> query = dbSet;
 
@@ -53,10 +53,10 @@ namespace Infrastructure.Repositories
                 }
             }
 
-            return query.ToList();
+            return await query.AsNoTracking().ToListAsync();
         }
 
-        public virtual TEntity? GetById(Guid id, List<string>? includeProperties = null)
+        public virtual async Task<TEntity?> GetById(Guid id, List<string>? includeProperties = null)
         {
             IQueryable<TEntity> query = dbSet;
 
@@ -68,7 +68,7 @@ namespace Infrastructure.Repositories
                 }
             }
 
-            return dbSet.Find(id);
+            return await dbSet.SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public virtual void Remove(TEntity entity) => dbSet.Remove(entity);

@@ -2,8 +2,10 @@
 
 namespace Domain.Interfaces
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork
     {
+        IGenericRepository<Teacher> TeacherRepository { get; }
+
         IGenericRepository<Subject> SubjectRepository { get; }
 
         IGenericRepository<Topic> TopicRepository { get; }

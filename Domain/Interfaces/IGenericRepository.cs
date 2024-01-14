@@ -5,9 +5,9 @@ namespace Domain.Interfaces
     public interface IGenericRepository<TEntity>
         where TEntity : class, IEntity, new()
     {
-        IReadOnlyCollection<TEntity> GetAll(List<string>? includeProperties = null);
+        Task<IReadOnlyCollection<TEntity>> GetAll(List<string>? includeProperties = null);
 
-        IReadOnlyCollection<TEntity> Find(Expression<Func<TEntity, bool>> filter, List<string>? includeProperties = null);
+        Task<IReadOnlyCollection<TEntity>> Find(Expression<Func<TEntity, bool>> filter, List<string>? includeProperties = null);
 
         void Add(TEntity entity);
 
@@ -19,6 +19,6 @@ namespace Domain.Interfaces
 
         void RemoveRange(TEntity[] entities);
 
-        TEntity? GetById(Guid id, List<string>? includeProperties = null);
+        Task<TEntity?> GetById(Guid id, List<string>? includeProperties = null);
     }
 }

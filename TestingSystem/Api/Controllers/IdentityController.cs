@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions;
 using Application.Identitity;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Api.Models;
@@ -11,21 +12,19 @@ namespace Presentation.Api.Controllers
     public class IdentityController : ControllerBase
     {
         private readonly IUserService userService;
+        private readonly IMapper mapper;
 
-        public IdentityController(IUserService userService)
+        public IdentityController(IUserService userService, IMapper mapper)
         {
             this.userService = userService;
+            this.mapper = mapper;
         }
 
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
-            var loginUser = new LoginUser
-            {
-                Password = loginModel.Password,
-                Username = loginModel.Username,
-            };
+            var loginUser = mapper.Map<LoginUser>(loginModel);
 
             var tokenModel = await userService.Login(loginUser);
 
@@ -35,6 +34,17 @@ namespace Presentation.Api.Controllers
             }
 
             return Ok(tokenModel);
+        }
+
+        [HttpPost]
+        [Route("register")]
+        public async Task<IActionResult> Register(RegistrationModel model)
+        {
+            var registerUser = mapper.Map<RegisterUser>(model);
+
+            var isSuccessful = await userService.Register(registerUser);
+
+            return Ok(isSuccessful);
         }
     }
 }

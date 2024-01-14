@@ -45,6 +45,10 @@ namespace Infrastructure
             modelBuilder.ApplyConfiguration(new TestConfiguration());
             modelBuilder.ApplyConfiguration(new QuestionConfiguration());
             modelBuilder.ApplyConfiguration(new StudentTestResultConfiguration());
+
+            modelBuilder.Entity<ApplicationUser>()
+                .Navigation(x => x.DomainUser)
+                .AutoInclude();
             //SeedIdentityData(modelBuilder);
         }
 

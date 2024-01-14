@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions;
 using Application.Identitity;
+using Application.Utilities;
 using Domain.Entities;
 using Domain.Enums;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +25,12 @@ namespace Infrastructure.Authentication
 
         public string GetAccessToken(ApplicationUser user, string userRole)
         {
-            List<Claim> claims = [new (ClaimTypes.Name, user.UserName), new (ClaimTypes.Role, userRole)];
+            user.NotNull(nameof(user));
+            user.NotNull(nameof(userRole));
+
+            List<Claim> claims = [new (ClaimTypes.NameIdentifier, user.DomainUser is not null ? user.DomainUser.Id.ToString() : user.Id.ToString()),
+                new (ClaimTypes.Name, user.UserName),
+                new (ClaimTypes.Role, userRole)];
 
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey));
             _ = int.TryParse(jwtOptions.AccessTokenExpirationTimeInMinutes, out int tokenExpirationTimeInMinutes);
@@ -49,8 +55,10 @@ namespace Infrastructure.Authentication
             return Convert.ToBase64String(randomNumber);
         }
 
-        ClaimsPrincipal IJwtProvider.GetPrincipalFromExpiredToken(string accessToken)
+        public ClaimsPrincipal GetPrincipalFromExpiredToken(string accessToken)
         {
+            accessToken.NotNull(nameof(accessToken));
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenValidationParameters = new TokenValidationParameters
             {

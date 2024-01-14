@@ -18,13 +18,18 @@ namespace Application.Mapping
                 .ForMember(dest => dest.Teacher, act => act.Ignore())
                 .ForMember(dest => dest.Topics, act => act.Ignore());
 
-            cfg.CreateMap<Topic, TopicViewModel>();
+            cfg.CreateMap<Topic, SubjectTopicViewModel>();
             cfg.CreateMap<Topic, TopicDTO>();
+            cfg.CreateMap<Topic, TopicViewModel>();
             cfg.CreateMap<AddTopicCommand, Topic>()
                 .ForMember(dest => dest.Id, act => act.MapFrom(_ => Guid.NewGuid()))
                 .ForMember(dest => dest.Subject, act => act.Ignore())
                 .ForMember(dest => dest.Questions, act => act.Ignore())
                 .ForMember(dest => dest.Tests, act => act.Ignore());
+
+            cfg.CreateMap<Test, TopicTestViewModel>();
+
+            cfg.CreateMap<Question, TopicQuestionViewModel>();
         }
     }
 }

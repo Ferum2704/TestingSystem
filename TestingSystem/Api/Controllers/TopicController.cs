@@ -1,4 +1,5 @@
 ﻿using Application.Features.Topics.Add;
+using Application.Features.Topics.Get;
 using Application.Identitity;
 using AutoMapper;
 using MediatR;
@@ -29,6 +30,15 @@ namespace Presentation.Api.Controllers
             addTopicCommand.SubjectId = subjectId;
 
             var createdTopic = await mediator.Send(addTopicCommand);
+
+            return Ok(createdTopic);
+        }
+
+        [Authorize(Roles = $"{nameof(ApplicationUserRole.Teacher)}")]
+        [HttpGet("{topicId}")]
+        public async Task<IActionResult> GetTopicDetails(Guid subjectId, Guid topicId)
+        {
+            var createdTopic = await mediator.Send(new GetTopicDetailsQuery { SubjectId = subjectId, TopicId = topicId});
 
             return Ok(createdTopic);
         }

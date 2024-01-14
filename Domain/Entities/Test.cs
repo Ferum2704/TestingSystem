@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces;
+﻿using Domain.Enums;
+using Domain.Interfaces;
 
 namespace Domain.Entities
 {
@@ -7,6 +8,8 @@ namespace Domain.Entities
         public Guid Id { get; set; }
 
         public DateTime TestDate { get; set; }
+
+        public TestState State { get; set; }
 
         public Guid StudentId { get; set; }
 

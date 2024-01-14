@@ -8,6 +8,6 @@ namespace Domain.Entities
 
         public DateTime? RefreshTokenExpiryTime { get; set; }
 
-        public virtual DomainUser DomainUser { get; set; }
+        public virtual DomainUser? DomainUser { get; set; }
     }
 }

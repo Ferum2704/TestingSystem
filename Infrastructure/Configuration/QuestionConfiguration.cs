@@ -12,6 +12,10 @@ namespace Infrastructure.Configuration
 
             builder.HasKey(x => x.Id);
 
+            builder.Ignore(x => x.OptionA);
+            builder.Ignore(x => x.OptionB);
+            builder.Ignore(x => x.OptionC);
+
             builder
                 .Property(x => x.CorrectAnswer)
                 .HasConversion<string>()

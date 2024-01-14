@@ -9,6 +9,12 @@ namespace Domain.Entities
 
         public string Text { get; set; }
 
+        public string OptionA { get; set; }
+
+        public string OptionB { get; set; }
+
+        public string OptionC { get; set; }
+
         public AnswerOption CorrectAnswer { get; set; }
 
         public Guid TopicId { get; set; }

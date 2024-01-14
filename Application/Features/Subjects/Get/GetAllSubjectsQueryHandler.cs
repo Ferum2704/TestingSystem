@@ -1,4 +1,5 @@
-﻿using Application.ViewModels;
+﻿using Application.Utilities;
+using Application.ViewModels;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
@@ -19,6 +20,8 @@ namespace Application.Features.Subjects.Get
 
         public async Task<IReadOnlyCollection<SubjectViewModel>> Handle(GetAllSubjectsQuery request, CancellationToken cancellationToken)
         {
+            request.NotNull(nameof(request));
+
             var allSubjects = await unitOfWork.SubjectRepository.GetAll([$"{nameof(Topic)}s"]);
 
             return mapper.Map<IReadOnlyCollection<SubjectViewModel>>(allSubjects);

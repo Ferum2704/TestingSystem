@@ -1,4 +1,5 @@
 ﻿using Application.Features.Subjects.Add;
+using Application.Features.Topics.Add;
 using Application.Identitity;
 using Application.Mapping;
 using AutoMapper;
@@ -22,6 +23,7 @@ namespace Presentation.Configurations
             cfg.CreateMap<RegistrationModel, RegisterUser>();
             cfg.CreateMap<LoginModel, LoginUser>();
             cfg.CreateMap<SubjectModel, AddSubjectCommand>();
+            cfg.CreateMap<TopicModel, AddTopicCommand>();
 
             ApplicationMappings.ConfigureAutoMapper(cfg);
         }

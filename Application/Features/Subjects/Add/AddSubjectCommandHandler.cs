@@ -22,8 +22,6 @@ namespace Application.Features.Subjects.Add
         {
             request.NotNull(nameof(request));
 
-            request.Id = Guid.NewGuid();
-
             var subject = mapper.Map<Subject>(request);
 
             unitOfWork.SubjectRepository.Add(subject);

@@ -1,5 +1,5 @@
 ﻿using Application.DTOs;
-using Application.Subjects.Add;
+using Application.Features.Subjects.Add;
 using Application.ViewModels;
 using AutoMapper;
 using Domain.Entities;

@@ -5,7 +5,7 @@ using Domain.Entities;
 using Domain.Interfaces;
 using MediatR;
 
-namespace Application.Subjects.GetSubjects
+namespace Application.Features.Subjects.Get
 {
     public class GetTeacherSubjectsQueryHandler : IRequestHandler<GetTeacherSubjectsQuery, IReadOnlyCollection<SubjectViewModel>>
     {

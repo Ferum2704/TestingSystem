@@ -1,8 +1,7 @@
-﻿using Application.DTOs;
+﻿using Application.Features.Subjects.Add;
+using Application.Features.Subjects.Get;
 using Application.Identitity;
-using Application.Subjects.Add;
 using AutoMapper;
-using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +33,15 @@ namespace Presentation.Api.Controllers
             var createdSubject = await mediator.Send(addSubjectCommand);
 
             return Ok(createdSubject);
+        }
+
+        [Authorize(Roles = $"{nameof(ApplicationUserRole.Student)}")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllSubjects()
+        {
+            var allSubjects = await mediator.Send(new GetAllSubjectsQuery());
+
+            return Ok(allSubjects);
         }
     }
 }

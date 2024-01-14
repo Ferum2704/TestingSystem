@@ -5,7 +5,7 @@ using Domain.Entities;
 using Domain.Interfaces;
 using MediatR;
 
-namespace Application.Subjects.Add
+namespace Application.Features.Subjects.Add
 {
     public class AddSubjectCommandHandler : IRequestHandler<AddSubjectCommand, SubjectDTO>
     {

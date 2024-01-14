@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Subjects.Add
+namespace Application.Features.Subjects.Add
 {
     public class AddSubjectCommand : IRequest<SubjectDTO>
     {

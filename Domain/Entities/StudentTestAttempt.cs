@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces;
+﻿using Domain.Enums;
+using Domain.Interfaces;
 
 namespace Domain.Entities
 {
@@ -15,6 +16,8 @@ namespace Domain.Entities
         public Test Test { get; set; }
 
         public int NumberOfAttemt { get; set; }
+
+        public TestState State { get; set; }
 
         public ICollection<StudentTestResult> Results { get; set; }
     }

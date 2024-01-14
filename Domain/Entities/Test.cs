@@ -9,8 +9,6 @@ namespace Domain.Entities
 
         public DateTime TestDate { get; set; }
 
-        public TestState State { get; set; }
-
         public Guid StudentId { get; set; }
 
         public Guid TopicId { get; set; }

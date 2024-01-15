@@ -11,8 +11,6 @@ namespace Domain.Entities
 
         public string Name { get; set; }
 
-        public Guid StudentId { get; set; }
-
         public Guid TopicId { get; set; }
 
         public Topic Topic { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Application.Features.Questions.Add;
 using Application.Features.Subjects.Add;
 using Application.Features.Topics.Add;
 using Application.ViewModels;
@@ -30,6 +31,13 @@ namespace Application.Mapping
             cfg.CreateMap<Test, TopicTestViewModel>();
 
             cfg.CreateMap<Question, TopicQuestionViewModel>();
+            cfg.CreateMap<Question, QuestionDTO>();
+            cfg.CreateMap<AddQuestionToTopicCommand, Question>()
+                .ForMember(dest => dest.Id, act => act.MapFrom(_ => Guid.NewGuid()))
+                .ForMember(dest => dest.Topic, act => act.Ignore())
+                .ForMember(dest => dest.Results, act => act.Ignore())
+                .ForMember(dest => dest.TestQuestions, act => act.Ignore())
+                .ForMember(dest => dest.Tests, act => act.Ignore());
         }
     }
 }

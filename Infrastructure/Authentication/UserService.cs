@@ -47,6 +47,11 @@ namespace Infrastructure.Authentication
                     tokenViewModel.AccessToken = jwtProvider.GetAccessToken(user, userRole);
                     tokenViewModel.RefreshToken = jwtProvider.GetRefreshToken();
                 }
+
+                if (user.DomainUser is not null)
+                {
+                    tokenViewModel.DomainUserId = user.DomainUser.Id;
+                }
             }
 
             return tokenViewModel;

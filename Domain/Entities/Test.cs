@@ -11,6 +11,8 @@ namespace Domain.Entities
 
         public string Name { get; set; }
 
+        public int Duration { get; set; }
+
         public Guid TopicId { get; set; }
 
         public Topic Topic { get; set; }

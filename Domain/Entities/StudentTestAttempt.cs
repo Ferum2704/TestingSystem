@@ -15,6 +15,10 @@ namespace Domain.Entities
 
         public Test Test { get; set; }
 
+        public DateTime StartedAt { get; set; }
+
+        public DateTime FinishedAt { get; set; }
+
         public int NumberOfAttemt { get; set; }
 
         public TestState State { get; set; }

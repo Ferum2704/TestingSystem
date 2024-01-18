@@ -12,6 +12,6 @@ namespace Domain.Entities
 
         public Teacher Teacher { get; set; }
 
-        public ICollection<Topic> Topics { get; set; }
+        public IReadOnlyCollection<Topic> Topics { get; set; }
     }
 }

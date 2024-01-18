@@ -23,6 +23,6 @@ namespace Domain.Entities
 
         public TestState State { get; set; }
 
-        public ICollection<StudentTestResult> Results { get; set; }
+        public IReadOnlyCollection<StudentTestResult> Results { get; set; }
     }
 }

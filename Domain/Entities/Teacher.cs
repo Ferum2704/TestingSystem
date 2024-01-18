@@ -2,6 +2,6 @@
 {
     public class Teacher : DomainUser
     {
-        public ICollection<Subject> Subjects { get; set; }
+        public IReadOnlyCollection<Subject> Subjects { get; set; }
     }
 }

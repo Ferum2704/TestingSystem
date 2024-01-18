@@ -4,8 +4,8 @@
     {
         public int NumberOfAttemts { get; set; }
 
-        public ICollection<Test> Tests { get; set; }
+        public IReadOnlyCollection<Test> Tests { get; set; }
 
-        public ICollection<StudentTestAttempt> TestsAttempts { get; set; }
+        public IReadOnlyCollection<StudentTestAttempt> TestsAttempts { get; set; }
     }
 }

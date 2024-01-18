@@ -12,8 +12,8 @@ namespace Domain.Entities
 
         public Subject Subject { get; set; }
 
-        public ICollection<Test> Tests { get; set; }
+        public IReadOnlyCollection<Test> Tests { get; set; }
 
-        public ICollection<Question> Questions { get; set; }
+        public IReadOnlyCollection<Question> Questions { get; set; }
     }
 }

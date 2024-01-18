@@ -21,10 +21,10 @@ namespace Domain.Entities
 
         public Topic Topic { get; set; }
 
-        public ICollection<Test> Tests { get; set; }
+        public IReadOnlyCollection<Test> Tests { get; set; }
 
-        public ICollection<TestQuestion> TestQuestions { get; set; }
+        public IReadOnlyCollection<TestQuestion> TestQuestions { get; set; }
 
-        public ICollection<StudentTestResult> Results { get; set; }
+        public IReadOnlyCollection<StudentTestResult> Results { get; set; }
     }
 }

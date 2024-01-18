@@ -17,12 +17,12 @@ namespace Domain.Entities
 
         public Topic Topic { get; set; }
 
-        public ICollection<Question> Questions { get; set; }
+        public IReadOnlyCollection<Question> Questions { get; set; }
 
-        public ICollection<TestQuestion> TestQuestions { get; set; }
+        public IReadOnlyCollection<TestQuestion> TestQuestions { get; set; }
 
-        public ICollection<Student> Students { get; set; }
+        public IReadOnlyCollection<Student> Students { get; set; }
 
-        public ICollection<StudentTestAttempt> StudentsAttempts { get; set; }
+        public IReadOnlyCollection<StudentTestAttempt> StudentsAttempts { get; set; }
     }
 }

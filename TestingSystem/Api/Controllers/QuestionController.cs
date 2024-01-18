@@ -36,5 +36,23 @@ namespace Presentation.Api.Controllers
 
             return Ok(createdQuestion);
         }
+
+        [Authorize(Roles = $"{nameof(ApplicationUserRole.Teacher)}")]
+        [HttpPost("tests/{testId}")]
+        public async Task<IActionResult> PostQuestionToTest(
+            Guid subjectId,
+            Guid topicId,
+            Guid testId,
+            TestQuestionModel testQuestionModel)
+        {
+            var addTestQuestionuestionCommand = mapper.Map<AddQuestionToTestCommand>(testQuestionModel);
+            addTestQuestionuestionCommand.SubjectId = subjectId;
+            addTestQuestionuestionCommand.TopicId = topicId;
+            addTestQuestionuestionCommand.TestId = testId;
+
+            await mediator.Send(addTestQuestionuestionCommand);
+
+            return Ok();
+        }
     }
 }

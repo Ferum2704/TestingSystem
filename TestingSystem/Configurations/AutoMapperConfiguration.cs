@@ -1,5 +1,6 @@
 ﻿using Application.Features.Questions.Add;
 using Application.Features.Subjects.Add;
+using Application.Features.Tests.Add;
 using Application.Features.Topics.Add;
 using Application.Identitity;
 using Application.Mapping;
@@ -26,6 +27,8 @@ namespace Presentation.Configurations
             cfg.CreateMap<SubjectModel, AddSubjectCommand>();
             cfg.CreateMap<TopicModel, AddTopicCommand>();
             cfg.CreateMap<QuestionModel, AddQuestionToTopicCommand>();
+            cfg.CreateMap<TestModel, AddTestCommand>();
+            cfg.CreateMap<TestQuestionModel, AddQuestionToTestCommand>();
 
             ApplicationMappings.ConfigureAutoMapper(cfg);
         }

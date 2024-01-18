@@ -16,6 +16,8 @@ namespace Domain.Interfaces
 
         IGenericRepository<Student> StudentRepository { get; }
 
+        IGenericRepository<TestQuestion> TestQuestionRepository { get; }
+
         IGenericRepository<StudentTestAttempt> StudentTestAttemptRepository { get; }
 
         Task SaveAsync();

@@ -14,6 +14,7 @@ namespace Infrastructure.Repositories
         private IGenericRepository<Question> questionRepository;
         private IGenericRepository<Student> studentRepository;
         private IGenericRepository<StudentTestAttempt> studentTestAttemptRepository;
+        private IGenericRepository<TestQuestion> testQuestionRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -33,6 +34,8 @@ namespace Infrastructure.Repositories
         public IGenericRepository<Student> StudentRepository => studentRepository ??= new GenericRepository<Student>(context);
 
         public IGenericRepository<StudentTestAttempt> StudentTestAttemptRepository => studentTestAttemptRepository ??= new GenericRepository<StudentTestAttempt>(context);
+
+        public IGenericRepository<TestQuestion> TestQuestionRepository => testQuestionRepository ??= new GenericRepository<TestQuestion>(context);
 
         public async Task SaveAsync()
         {

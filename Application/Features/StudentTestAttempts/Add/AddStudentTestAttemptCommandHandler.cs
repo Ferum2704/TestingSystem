@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.Features.StudentTestAttempts.Add
 {
-    public class AddStudentTestAttemptCommandHandler : IRequestHandler<AddStudentTestAttemptCommand>
+    public class AddStudentTestAttemptCommandHandler : IRequestHandler<AddStudentTestAttemptCommand, Guid>
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
@@ -17,7 +17,7 @@ namespace Application.Features.StudentTestAttempts.Add
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task Handle(AddStudentTestAttemptCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(AddStudentTestAttemptCommand request, CancellationToken cancellationToken)
         {
             request.NotNull(nameof(request));
 
@@ -36,6 +36,8 @@ namespace Application.Features.StudentTestAttempts.Add
 
             unitOfWork.StudentTestAttemptRepository.Add(studentAttempt);
             await unitOfWork.SaveAsync();
+
+            return studentAttempt.Id;
         }
     }
 }

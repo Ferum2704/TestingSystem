@@ -1,6 +1,7 @@
 ﻿using Application.DTOs;
 using Application.Features.Questions.Add;
 using Application.Features.StudentTestAttempts.Add;
+using Application.Features.StudentTestResults.Put;
 using Application.Features.Subjects.Add;
 using Application.Features.Tests.Add;
 using Application.Features.Topics.Add;
@@ -64,6 +65,13 @@ namespace Application.Mapping
                 .ForMember(dest => dest.Results, act => act.Ignore())
                 .ForMember(dest => dest.Student, act => act.Ignore())
                 .ForMember(dest => dest.Test, act => act.Ignore());
+
+            cfg.CreateMap<PutStudentTestResultCommand, StudentTestResult>()
+                .ForMember(dest => dest.Id, act => act.MapFrom(_ => Guid.NewGuid()))
+                .ForMember(dest => dest.StudentAttempt, act => act.Ignore())
+                .ForMember(dest => dest.Question, act => act.Ignore())
+                .ForMember(dest => dest.IsCorrect, act => act.Ignore());
+            cfg.CreateMap<StudentTestResult, StudentTestResultDTO>();
         }
     }
 }

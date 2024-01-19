@@ -26,7 +26,7 @@ namespace Presentation.Api.Controllers
             Guid studentId,
             Guid testId)
         {
-            await mediator.Send(new AddStudentTestAttemptCommand()
+            var createdAttemptId = await mediator.Send(new AddStudentTestAttemptCommand()
             {
                 SubjectId = subjectId,
                 TopicId = topicId,
@@ -34,7 +34,7 @@ namespace Presentation.Api.Controllers
                 TestId = testId,
             });
 
-            return Ok();
+            return Ok(createdAttemptId);
         }
     }
 }

@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Features.Tests.Get
 {
-    public class GetStudentTestDetailsQuery : IRequest<StudentTestDetailsViewModel>
+    public class GetTeacherTestDetailsQuery : IRequest<TeacherTestDetailsViewModel>
     {
         public Guid TestId { get; set; }
     }

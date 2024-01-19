@@ -9,7 +9,7 @@ using Presentation.Api.Models;
 
 namespace Presentation.Api.Controllers
 {
-    [Route("api/subjects/{subjectId}/topics/{topicId}")]
+    [Route("api/subjects/{subjectId}/topics/{topicId}/tests")]
     [ApiController]
     public class TestController : ControllerBase
     {
@@ -23,7 +23,7 @@ namespace Presentation.Api.Controllers
         }
 
         [Authorize(Roles = $"{nameof(ApplicationUserRole.Teacher)}")]
-        [HttpPost("tests")]
+        [HttpPost]
         public async Task<IActionResult> PostTest(Guid topicId, TestModel testModel)
         {
             var addTestCommand = mapper.Map<AddTestCommand>(testModel);
@@ -35,10 +35,19 @@ namespace Presentation.Api.Controllers
         }
 
         [Authorize(Roles = $"{nameof(ApplicationUserRole.Student)}")]
-        [HttpGet("students/{studentId}/tests/{testId}")]
-        public async Task<IActionResult> GetStudentTestDetails(Guid studentId, Guid testId)
+        [HttpGet("{testId}/student")]
+        public async Task<IActionResult> GetStudentTestDetails(Guid testId)
         {
-            var testDetails = await mediator.Send(new GetStudentTestDetailsQuery { StudentId = studentId, TestId = testId});
+            var testDetails = await mediator.Send(new GetStudentTestDetailsQuery { TestId = testId });
+
+            return Ok(testDetails);
+        }
+
+        [Authorize(Roles = $"{nameof(ApplicationUserRole.Teacher)}")]
+        [HttpGet("{testId}/teacher")]
+        public async Task<IActionResult> GetTeacherTestDetails(Guid testId)
+        {
+            var testDetails = await mediator.Send(new GetTeacherTestDetailsQuery { TestId = testId });
 
             return Ok(testDetails);
         }

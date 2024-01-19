@@ -14,10 +14,6 @@ namespace Infrastructure.Configuration
                 .HasMany(x => x.Tests)
                 .WithMany(x => x.Students)
                 .UsingEntity<StudentTestAttempt>();
-
-            builder
-                .Property(x => x.NumberOfAttemts)
-                .HasDefaultValue(2);
         }
     }
 }

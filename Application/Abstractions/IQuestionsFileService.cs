@@ -1,10 +1,10 @@
 ﻿using Domain.Entities;
 
-namespace Domain.Interfaces
+namespace Application.Abstractions
 {
     public interface IQuestionsFileService
     {
-        void ParseTopicQuestions (string topicName, IReadOnlyCollection<Question> questions);
+        void ParseTopicQuestions(string topicName, IReadOnlyCollection<Question> questions);
 
         void WriteTopicQuestion(string topicName, Question question);
     }

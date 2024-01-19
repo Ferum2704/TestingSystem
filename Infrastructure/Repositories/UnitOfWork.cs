@@ -1,4 +1,6 @@
-﻿using Domain.Entities;
+﻿using Application.Abstractions;
+using Application.Abstractions.IRepository;
+using Domain.Entities;
 using Domain.Interfaces;
 
 namespace Infrastructure.Repositories
@@ -7,35 +9,35 @@ namespace Infrastructure.Repositories
     {
         private readonly ApplicationDbContext context;
 
-        private IGenericRepository<Teacher> teacherRepository;
-        private IGenericRepository<Subject> subjectRepository;
-        private IGenericRepository<Topic> topicRepository;
-        private IGenericRepository<Test> testRepository;
-        private IGenericRepository<Question> questionRepository;
-        private IGenericRepository<Student> studentRepository;
-        private IGenericRepository<StudentTestAttempt> studentTestAttemptRepository;
-        private IGenericRepository<TestQuestion> testQuestionRepository;
+        private ITeacherRepository teacherRepository;
+        private ISubjectRepository subjectRepository;
+        private ITopicRepository topicRepository;
+        private ITestRepository testRepository;
+        private IQuestionRepository questionRepository;
+        private IStudentRepository studentRepository;
+        private IStudentTestAttemptRepository studentTestAttemptRepository;
+        private IStudentTestResultRepository studentTestResultRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
             this.context = context;
         }
 
-        public IGenericRepository<Teacher> TeacherRepository => teacherRepository ??= new GenericRepository<Teacher>(context);
+        public IStudentTestResultRepository StudentTestResultRepository => studentTestResultRepository ??= new StudentTestResultRepository(context);
 
-        public IGenericRepository<Subject> SubjectRepository => subjectRepository ??= new GenericRepository<Subject>(context);
+        ITeacherRepository IUnitOfWork.TeacherRepository => teacherRepository ??= new TeacherRepository(context);
 
-        public IGenericRepository<Topic> TopicRepository => topicRepository ??= new GenericRepository<Topic>(context);
+        ISubjectRepository IUnitOfWork.SubjectRepository => subjectRepository ??= new SubjectRepository(context);
 
-        public IGenericRepository<Test> TestRepository => testRepository ??= new GenericRepository<Test>(context);
+        ITopicRepository IUnitOfWork.TopicRepository => topicRepository ??= new TopicRepository(context);
 
-        public IGenericRepository<Question> QuestionRepository => questionRepository ??= new GenericRepository<Question>(context);
+        ITestRepository IUnitOfWork.TestRepository => testRepository ??= new TestRepository(context);
 
-        public IGenericRepository<Student> StudentRepository => studentRepository ??= new GenericRepository<Student>(context);
+        IQuestionRepository IUnitOfWork.QuestionRepository => questionRepository ??= new QuestionRepository(context);
 
-        public IGenericRepository<StudentTestAttempt> StudentTestAttemptRepository => studentTestAttemptRepository ??= new GenericRepository<StudentTestAttempt>(context);
+        IStudentRepository IUnitOfWork.StudentRepository => studentRepository ??= new StudentRepository(context);
 
-        public IGenericRepository<TestQuestion> TestQuestionRepository => testQuestionRepository ??= new GenericRepository<TestQuestion>(context);
+        IStudentTestAttemptRepository IUnitOfWork.StudentTestAttemptRepository => studentTestAttemptRepository ??= new StudentTestAttemptRepository(context);
 
         public async Task SaveAsync()
         {

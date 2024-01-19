@@ -13,6 +13,8 @@ namespace Domain.Entities
 
         public int Duration { get; set; }
 
+        public int NumberOfAttempts { get; set; }
+
         public Guid TopicId { get; set; }
 
         public Topic Topic { get; set; }

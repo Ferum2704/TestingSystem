@@ -1,6 +1,6 @@
 ﻿using Domain.Enums;
 
-namespace Application.ViewModels
+namespace Application.ViewModels.QuestionVMs
 {
     public class TopicQuestionViewModel
     {

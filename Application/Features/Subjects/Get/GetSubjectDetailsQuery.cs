@@ -1,4 +1,4 @@
-﻿using Application.ViewModels;
+﻿using Application.ViewModels.SubjectVMs;
 using MediatR;
 
 namespace Application.Features.Subjects.Get

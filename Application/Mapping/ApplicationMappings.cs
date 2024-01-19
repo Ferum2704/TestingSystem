@@ -6,6 +6,9 @@ using Application.Features.Subjects.Add;
 using Application.Features.Tests.Add;
 using Application.Features.Topics.Add;
 using Application.ViewModels;
+using Application.ViewModels.QuestionVMs;
+using Application.ViewModels.SubjectVMs;
+using Application.ViewModels.TestVMs;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Enums;
@@ -24,7 +27,6 @@ namespace Application.Mapping
                 .ForMember(dest => dest.Teacher, act => act.Ignore())
                 .ForMember(dest => dest.Topics, act => act.Ignore());
 
-            cfg.CreateMap<Topic, SubjectTopicViewModel>();
             cfg.CreateMap<Topic, TopicDTO>();
             cfg.CreateMap<Topic, TopicViewModel>();
             cfg.CreateMap<AddTopicCommand, Topic>()
@@ -34,8 +36,7 @@ namespace Application.Mapping
                 .ForMember(dest => dest.Tests, act => act.Ignore());
 
             cfg.CreateMap<Test, TopicTestViewModel>()
-                .ForMember(dest => dest.QuestionIds, act => act.MapFrom(src => src.TestQuestions.Select(x => x.Id).ToList()))
-                .ForMember(dest => dest.QuestionIds, act => act.Ignore());
+                .ForMember(dest => dest.QuestionIds, act => act.MapFrom(src => src.TestQuestions.Select(x => x.Id).ToList()));
             cfg.CreateMap<Test, TestDTO>();
             cfg.CreateMap<AddTestCommand, Test>()
                 .ForMember(dest => dest.Id, act => act.MapFrom(_ => Guid.NewGuid()))

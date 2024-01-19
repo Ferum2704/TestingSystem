@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.ViewModels.QuestionVMs;
+using Application.ViewModels.TestVMs;
 
 namespace Application.ViewModels
 {

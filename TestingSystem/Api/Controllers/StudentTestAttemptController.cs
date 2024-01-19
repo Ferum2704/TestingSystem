@@ -14,12 +14,10 @@ namespace Presentation.Api.Controllers
     [ApiController]
     public class StudentTestAttemptController : ControllerBase
     {
-        private readonly IMapper mapper;
         private readonly IMediator mediator;
 
-        public StudentTestAttemptController(IMapper mapper, IMediator mediator)
+        public StudentTestAttemptController(IMediator mediator)
         {
-            this.mapper = mapper;
             this.mediator = mediator;
         }
 

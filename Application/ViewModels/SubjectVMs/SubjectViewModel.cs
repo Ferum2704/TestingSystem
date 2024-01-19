@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace Application.ViewModels
+namespace Application.ViewModels.SubjectVMs
 {
     public class SubjectViewModel
     {

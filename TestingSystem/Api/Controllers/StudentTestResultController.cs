@@ -14,7 +14,7 @@ namespace Presentation.Api.Controllers
     {
         private readonly IMediator mediator;
 
-        public StudentTestResultController(IMapper mapper, IMediator mediator)
+        public StudentTestResultController(IMediator mediator)
         {
             this.mediator = mediator;
         }

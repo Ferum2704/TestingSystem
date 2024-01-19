@@ -2,7 +2,7 @@
 
 namespace Presentation.Api.Models
 {
-    public class StudentTestAttemptModel
+    public class StudentTestAttemptPutModel
     {
         public TestStateDTO State { get; set; }
     }

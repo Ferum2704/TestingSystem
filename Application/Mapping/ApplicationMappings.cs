@@ -74,6 +74,8 @@ namespace Application.Mapping
                 .ForMember(dest => dest.Question, act => act.Ignore())
                 .ForMember(dest => dest.IsCorrect, act => act.Ignore());
             cfg.CreateMap<StudentTestResult, StudentTestResultDTO>();
+
+            cfg.CreateMap<Student, StudentShortInfoViewModel>();
         }
     }
 }

@@ -50,6 +50,11 @@ namespace Presentation.Api.Controllers
         {
             var subjectDetails = await mediator.Send(new GetSubjectDetailsQuery { Id = subjectId });
 
+            if (subjectDetails is null)
+            {
+                return NotFound();
+            }
+
             return Ok(subjectDetails);
         }
     }

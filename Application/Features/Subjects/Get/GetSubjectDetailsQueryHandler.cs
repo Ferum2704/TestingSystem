@@ -29,11 +29,16 @@ namespace Application.Features.Subjects.Get
             this.questionFileService = questionFileService;
         }
 
-        public async Task<SubjectViewModel> Handle(GetSubjectDetailsQuery request, CancellationToken cancellationToken)
+        public async Task<SubjectViewModel?> Handle(GetSubjectDetailsQuery request, CancellationToken cancellationToken)
         {
             request.NotNull(nameof(request));
 
             var subject = await unitOfWork.SubjectRepository.GetByIdAsync(request.Id);
+
+            if (subject == null)
+            {
+                return null;
+            }
 
             await subject.Topics.ForEachAsync(MapTestsAndQuestions);
 

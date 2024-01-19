@@ -12,13 +12,16 @@ namespace Application.Features.Tests.Get
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
+        private readonly IQuestionsFileService questionFileService;
 
         public GetStudentTestDetailsQueryHandler(
             IUnitOfWork unitOfWork,
-            IMapper mapper)
+            IMapper mapper,
+            IQuestionsFileService questionFileService)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.questionFileService = questionFileService;
         }
 
         public async Task<StudentTestDetailsViewModel> Handle(GetStudentTestDetailsQuery request, CancellationToken cancellationToken)
@@ -27,6 +30,9 @@ namespace Application.Features.Tests.Get
 
             var testQuestions = (await unitOfWork.TestQuestionRepository.GetAsync(x => x.TestId == request.TestId, cancellationToken)).Select(x => x.Question).ToList();
             var testAttempts = await unitOfWork.StudentTestAttemptRepository.GetAsync(x => x.TestId == request.TestId, cancellationToken);
+
+            var topic = await unitOfWork.TopicRepository.GetByIdAsync(request.TopicId, cancellationToken);
+            questionFileService.ParseTopicQuestions(topic.Title, testQuestions);
 
             var testDetails = new StudentTestDetailsViewModel
             {

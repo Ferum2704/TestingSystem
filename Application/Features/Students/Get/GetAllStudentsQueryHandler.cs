@@ -1,6 +1,6 @@
 ﻿using Application.Abstractions;
 using Application.Utilities;
-using Application.ViewModels;
+using Application.ViewModels.StudentVMs;
 using AutoMapper;
 using MediatR;
 

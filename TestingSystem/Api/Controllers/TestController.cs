@@ -1,16 +1,15 @@
 ﻿using Application.Features.Tests.Add;
-using Application.Features.Topics.Add;
+using Application.Features.Tests.Get;
 using Application.Identitity;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Api.Models;
 
 namespace Presentation.Api.Controllers
 {
-    [Route("api/subjects/{subjectId}/topics/{topicId}/tests")]
+    [Route("api/subjects/{subjectId}/topics/{topicId}")]
     [ApiController]
     public class TestController : ControllerBase
     {
@@ -24,7 +23,7 @@ namespace Presentation.Api.Controllers
         }
 
         [Authorize(Roles = $"{nameof(ApplicationUserRole.Teacher)}")]
-        [HttpPost]
+        [HttpPost("tests")]
         public async Task<IActionResult> PostTest(Guid topicId, TestModel testModel)
         {
             var addTestCommand = mapper.Map<AddTestCommand>(testModel);
@@ -33,6 +32,15 @@ namespace Presentation.Api.Controllers
             var createdTest = await mediator.Send(addTestCommand);
 
             return Ok(createdTest);
+        }
+
+        [Authorize(Roles = $"{nameof(ApplicationUserRole.Student)}")]
+        [HttpGet("students/{studentId}/tests/{testId}")]
+        public async Task<IActionResult> GetStudentTestDetails(Guid studentId, Guid testId)
+        {
+            var testDetails = await mediator.Send(new GetStudentTestDetailsQuery { StudentId = studentId, TestId = testId});
+
+            return Ok(testDetails);
         }
     }
 }

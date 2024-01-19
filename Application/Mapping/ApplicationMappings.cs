@@ -58,6 +58,7 @@ namespace Application.Mapping
                 .ForMember(dest => dest.Id, act => act.MapFrom(_ => Guid.NewGuid()))
                 .ForMember(dest => dest.Test, act => act.Ignore())
                 .ForMember(dest => dest.Question, act => act.Ignore());
+            cfg.CreateMap<Question, TestQuestionViewModel>();
 
             cfg.CreateMap<AddStudentTestAttemptCommand, StudentTestAttempt>()
                 .ForMember(dest => dest.Id, act => act.MapFrom(_ => Guid.NewGuid()))
@@ -67,6 +68,7 @@ namespace Application.Mapping
                 .ForMember(dest => dest.Results, act => act.Ignore())
                 .ForMember(dest => dest.Student, act => act.Ignore())
                 .ForMember(dest => dest.Test, act => act.Ignore());
+            cfg.CreateMap<StudentTestAttempt, StudentTestAttemptViewModel>();
 
             cfg.CreateMap<PutStudentTestResultCommand, StudentTestResult>()
                 .ForMember(dest => dest.Id, act => act.MapFrom(_ => Guid.NewGuid()))
@@ -76,6 +78,8 @@ namespace Application.Mapping
             cfg.CreateMap<StudentTestResult, StudentTestResultDTO>();
 
             cfg.CreateMap<Student, StudentShortInfoViewModel>();
+
+            cfg.CreateMap<StudentTestResult, StudentTestResultViewModel>();
         }
     }
 }

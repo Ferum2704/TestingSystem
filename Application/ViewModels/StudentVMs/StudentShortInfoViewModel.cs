@@ -1,4 +1,4 @@
-﻿namespace Application.ViewModels
+﻿namespace Application.ViewModels.StudentVMs
 {
     public class StudentShortInfoViewModel
     {

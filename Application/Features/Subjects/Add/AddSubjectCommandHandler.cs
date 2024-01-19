@@ -1,8 +1,8 @@
-﻿using Application.DTOs;
+﻿using Application.Abstractions;
+using Application.DTOs;
 using Application.Utilities;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Interfaces;
 using MediatR;
 
 namespace Application.Features.Subjects.Add

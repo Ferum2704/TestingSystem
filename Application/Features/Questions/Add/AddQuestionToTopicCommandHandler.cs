@@ -1,8 +1,8 @@
-﻿using Application.DTOs;
+﻿using Application.Abstractions;
+using Application.DTOs;
 using Application.Utilities;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Interfaces;
 using MediatR;
 
 namespace Application.Features.Questions.Add
@@ -25,7 +25,7 @@ namespace Application.Features.Questions.Add
             request.NotNull(nameof(request));
 
             var question = mapper.Map<Question>(request);
-            var topic = await unitOfWork.TopicRepository.GetById(request.TopicId);
+            var topic = await unitOfWork.TopicRepository.GetByIdAsync(request.TopicId);
 
             questionsFileService.WriteTopicQuestion(topic.Title, question);
 

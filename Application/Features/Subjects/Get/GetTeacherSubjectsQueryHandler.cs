@@ -1,4 +1,5 @@
-﻿using Application.Utilities;
+﻿using Application.Abstractions;
+using Application.Utilities;
 using Application.ViewModels;
 using AutoMapper;
 using Domain.Entities;
@@ -7,7 +8,7 @@ using MediatR;
 
 namespace Application.Features.Subjects.Get
 {
-    public class GetTeacherSubjectsQueryHandler : IRequestHandler<GetTeacherSubjectsQuery, IReadOnlyCollection<SubjectViewModel>>
+    public class GetTeacherSubjectsQueryHandler : IRequestHandler<GetTeacherSubjectsQuery, IReadOnlyCollection<SubjectInfoViewModel>>
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
@@ -18,13 +19,13 @@ namespace Application.Features.Subjects.Get
             this.mapper = mapper;
         }
 
-        public async Task<IReadOnlyCollection<SubjectViewModel>> Handle(GetTeacherSubjectsQuery request, CancellationToken cancellationToken)
+        public async Task<IReadOnlyCollection<SubjectInfoViewModel>> Handle(GetTeacherSubjectsQuery request, CancellationToken cancellationToken)
         {
             request.NotNull(nameof(request));
 
-            var teacherSubjects = await unitOfWork.SubjectRepository.Find(x => x.TeacherId == request.TeacherId, new List<string> { $"{nameof(Topic)}s" });
+            var teacherSubjects = await unitOfWork.SubjectRepository.GetAsync(x => x.TeacherId == request.TeacherId);
 
-            return mapper.Map<IReadOnlyCollection<SubjectViewModel>>(teacherSubjects);
+            return mapper.Map<IReadOnlyCollection<SubjectInfoViewModel>>(teacherSubjects);
         }
     }
 }

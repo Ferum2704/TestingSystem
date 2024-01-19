@@ -1,8 +1,8 @@
-﻿using Application.Utilities;
+﻿using Application.Abstractions;
+using Application.Utilities;
 using Application.ViewModels;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Interfaces;
 using MediatR;
 
 namespace Application.Features.Subjects.Get
@@ -22,7 +22,7 @@ namespace Application.Features.Subjects.Get
         {
             request.NotNull(nameof(request));
 
-            var allSubjects = await unitOfWork.SubjectRepository.GetAll([$"{nameof(Topic)}s"]);
+            var allSubjects = await unitOfWork.SubjectRepository.GetAsync();
 
             return mapper.Map<IReadOnlyCollection<SubjectViewModel>>(allSubjects);
         }

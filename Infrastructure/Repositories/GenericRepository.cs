@@ -9,7 +9,7 @@ namespace Infrastructure.Repositories
         where TEntity : class, IEntity, new()
     {
         protected readonly ApplicationDbContext context;
-        private readonly DbSet<TEntity> dbSet;
+        protected readonly DbSet<TEntity> dbSet;
 
         public GenericRepository(ApplicationDbContext context)
         {
@@ -23,7 +23,7 @@ namespace Infrastructure.Repositories
 
             if (filter is null)
             {
-                await query.AsNoTracking().ToListAsync();
+                return await query.AsNoTracking().ToListAsync();
             }
 
             return await query.Where(filter).AsNoTracking().ToListAsync();

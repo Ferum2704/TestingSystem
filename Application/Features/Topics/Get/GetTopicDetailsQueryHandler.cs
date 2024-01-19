@@ -1,4 +1,5 @@
-﻿using Application.Utilities;
+﻿using Application.Abstractions;
+using Application.Utilities;
 using Application.ViewModels;
 using AutoMapper;
 using Domain.Entities;
@@ -22,7 +23,7 @@ namespace Application.Features.Topics.Get
         {
             request.NotNull(nameof(request));
 
-            var topic = await unitOfWork.TopicRepository.GetById(request.TopicId, [$"{nameof(Test)}s", $"{nameof(Question)}s"]);
+            var topic = await unitOfWork.TopicRepository.GetByIdAsync(request.TopicId);
 
             return mapper.Map<TopicViewModel>(topic);
         }

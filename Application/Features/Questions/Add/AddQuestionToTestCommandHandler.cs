@@ -1,8 +1,7 @@
-﻿using Application.DTOs;
+﻿using Application.Abstractions;
 using Application.Utilities;
 using AutoMapper;
 using Domain.Entities;
-using Domain.Interfaces;
 using MediatR;
 
 namespace Application.Features.Questions.Add
@@ -23,7 +22,9 @@ namespace Application.Features.Questions.Add
             request.NotNull(nameof(request));
 
             var testQuestion = mapper.Map<TestQuestion>(request);
-            unitOfWork.TestQuestionRepository.Add(testQuestion);
+
+            unitOfWork.QuestionRepository.AddQuestionToTest(testQuestion);
+
             await unitOfWork.SaveAsync();
         }
     }

@@ -1,8 +1,10 @@
 ﻿using Application.Abstractions;
+using Application.DTOs.Enums;
 using Application.Utilities;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
+using System.Threading;
 
 namespace Application.Features.StudentTestAttempts.Edit
 {
@@ -19,29 +21,42 @@ namespace Application.Features.StudentTestAttempts.Edit
         {
             request.NotNull(nameof(request));
 
-            var testAttempt = await unitOfWork.StudentTestAttemptRepository.GetByIdAsync(request.AttemptId, cancellationToken);
-
-            if (testAttempt is not null)
+            var testAttempt = request.State switch
             {
-                switch (request.State)
-                {
-                    case DTOs.Enums.TestStateDTO.InProgress:
-                        testAttempt.State = TestState.InProgress;
-                        testAttempt.StartedAt = DateTime.UtcNow;
-                        break;
-                    case DTOs.Enums.TestStateDTO.Finished:
-                        CreateNotAnsweredResults(testAttempt);
-                        testAttempt.State = TestState.Finished;
-                        testAttempt.FinishedAt = DateTime.UtcNow;
-                        break;
-                    default:
-                        break;
-                }
+                TestStateDTO.InProgress => await StartTest(request, cancellationToken),
+                TestStateDTO.Finished => await FinishTest(request, cancellationToken),
+                _ => throw new ArgumentException()
+            };
 
-                unitOfWork.StudentTestAttemptRepository.Update(testAttempt);
+            unitOfWork.StudentTestAttemptRepository.Update(testAttempt);
 
-                await unitOfWork.SaveAsync();
-            }
+            await unitOfWork.SaveAsync();
+        }
+
+        private async Task<StudentTestAttempt> StartTest(EditStudentTestAttemptCommand request, CancellationToken cancellationToken)
+        {
+            var testAttempt = (await unitOfWork.StudentTestAttemptRepository
+                .GetAsync(x => x.TestId == request.TestId && x.StudentId == request.StudentId && x.State == TestState.NotStarted, cancellationToken))
+                .OrderBy(x => x.NumberOfAttemt)
+                .FirstOrDefault();
+
+            testAttempt.State = TestState.InProgress;
+            testAttempt.StartedAt = DateTime.UtcNow;
+
+            return testAttempt;
+        }
+
+        private async Task<StudentTestAttempt> FinishTest(EditStudentTestAttemptCommand request, CancellationToken cancellationToken)
+        {
+            var testAttempt = (await unitOfWork.StudentTestAttemptRepository
+                .GetAsync(x => x.TestId == request.TestId && x.StudentId == request.StudentId && x.State == TestState.InProgress, cancellationToken))
+                .SingleOrDefault();
+            CreateNotAnsweredResults(testAttempt);
+
+            testAttempt.State = TestState.Finished;
+            testAttempt.FinishedAt = DateTime.UtcNow;
+
+            return testAttempt;
         }
 
         private async void CreateNotAnsweredResults(StudentTestAttempt studentTestAttempt)

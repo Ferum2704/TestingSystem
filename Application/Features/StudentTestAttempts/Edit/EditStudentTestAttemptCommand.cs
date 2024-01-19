@@ -14,8 +14,6 @@ namespace Application.Features.StudentTestAttempts.Edit
 
         public Guid StudentId { get; set; }
 
-        public Guid AttemptId { get; set; }
-
         public TestStateDTO State { get; set; }
     }
 }

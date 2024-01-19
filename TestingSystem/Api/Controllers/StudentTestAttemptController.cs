@@ -39,28 +39,5 @@ namespace Presentation.Api.Controllers
 
             return Ok(createdAttemptsIds);
         }
-
-        [Authorize(Roles = $"{nameof(ApplicationUserRole.Student)}")]
-        [HttpPut]
-        public async Task<IActionResult> PutStudentTestAttempt(
-            Guid subjectId,
-            Guid topicId,
-            Guid studentId,
-            Guid testId,
-            Guid attemptId,
-            StudentTestAttemptPutModel studentTestAttemptModel)
-        {
-            await mediator.Send(new EditStudentTestAttemptCommand()
-            {
-                SubjectId = subjectId,
-                TopicId = topicId,
-                StudentId = studentId,
-                TestId = testId,
-                AttemptId = attemptId,
-                State = studentTestAttemptModel.State,
-            });
-
-            return Ok();
-        }
     }
 }

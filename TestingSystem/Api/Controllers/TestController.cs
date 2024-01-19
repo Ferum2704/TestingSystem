@@ -1,4 +1,5 @@
-﻿using Application.Features.Tests.Add;
+﻿using Application.Features.StudentTestAttempts.Edit;
+using Application.Features.Tests.Add;
 using Application.Features.Tests.Get;
 using Application.Identitity;
 using AutoMapper;
@@ -50,6 +51,27 @@ namespace Presentation.Api.Controllers
             var testDetails = await mediator.Send(new GetTeacherTestDetailsQuery { TestId = testId });
 
             return Ok(testDetails);
+        }
+
+        [Authorize(Roles = $"{nameof(ApplicationUserRole.Student)}")]
+        [HttpPut("{testId}/students/{studentId}")]
+        public async Task<IActionResult> PutTest(
+            Guid subjectId,
+            Guid topicId,
+            Guid testId,
+            Guid studentId,
+            StudentTestAttemptPutModel studentTestAttemptModel)
+        {
+            await mediator.Send(new EditStudentTestAttemptCommand()
+            {
+                SubjectId = subjectId,
+                TopicId = topicId,
+                StudentId = studentId,
+                TestId = testId,
+                State = studentTestAttemptModel.State,
+            });
+
+            return Ok();
         }
     }
 }

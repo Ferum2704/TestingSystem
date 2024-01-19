@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.Features.StudentTestAttempts.Add
 {
-    public class AddStudentTestAttemptCommandHandler : IRequestHandler<AddStudentTestAttemptCommand, Guid>
+    public class AddStudentTestAttemptCommandHandler : IRequestHandler<AddStudentTestAttemptCommand, IReadOnlyCollection<Guid>>
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
@@ -17,27 +17,24 @@ namespace Application.Features.StudentTestAttempts.Add
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<Guid> Handle(AddStudentTestAttemptCommand request, CancellationToken cancellationToken)
+        public async Task<IReadOnlyCollection<Guid>> Handle(AddStudentTestAttemptCommand request, CancellationToken cancellationToken)
         {
             request.NotNull(nameof(request));
 
-            var testAttempts = await unitOfWork.StudentTestAttemptRepository.GetAsync(x => x.StudentId == request.StudentId && x.TestId == request.TestId, cancellationToken);
+            var test = await unitOfWork.TestRepository.GetByIdAsync(request.TestId, cancellationToken);
+            var createdAttemptsIds = new List<Guid>();
 
-            var studentAttempt = mapper.Map<StudentTestAttempt>(request);
-
-            if (testAttempts.Count == 0)
+            for (int i = 1; i < test.NumberOfAttempts; i++)
             {
-                studentAttempt.NumberOfAttemt = 1;
-            }
-            else
-            {
-                studentAttempt.NumberOfAttemt = ++testAttempts.MaxBy(x => x.NumberOfAttemt).NumberOfAttemt;
+                var studentAttempt = mapper.Map<StudentTestAttempt>(request);
+                studentAttempt.NumberOfAttemt = i;
+                unitOfWork.StudentTestAttemptRepository.Add(studentAttempt);
+                createdAttemptsIds.Add(studentAttempt.Id);
             }
 
-            unitOfWork.StudentTestAttemptRepository.Add(studentAttempt);
             await unitOfWork.SaveAsync();
 
-            return studentAttempt.Id;
+            return createdAttemptsIds;
         }
     }
 }

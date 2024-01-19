@@ -1,8 +1,12 @@
 ﻿using Application.Features.StudentTestAttempts.Add;
+using Application.Features.StudentTestAttempts.Edit;
+using Application.Identitity;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Api.Models;
 
 namespace Presentation.Api.Controllers
 {
@@ -19,6 +23,7 @@ namespace Presentation.Api.Controllers
             this.mediator = mediator;
         }
 
+        [Authorize(Roles = $"{nameof(ApplicationUserRole.Teacher)}")]
         [HttpPost]
         public async Task<IActionResult> PostStudentTestAttempt(
             Guid subjectId,
@@ -26,7 +31,7 @@ namespace Presentation.Api.Controllers
             Guid studentId,
             Guid testId)
         {
-            var createdAttemptId = await mediator.Send(new AddStudentTestAttemptCommand()
+            var createdAttemptsIds = await mediator.Send(new AddStudentTestAttemptCommand()
             {
                 SubjectId = subjectId,
                 TopicId = topicId,
@@ -34,7 +39,30 @@ namespace Presentation.Api.Controllers
                 TestId = testId,
             });
 
-            return Ok(createdAttemptId);
+            return Ok(createdAttemptsIds);
+        }
+
+        [Authorize(Roles = $"{nameof(ApplicationUserRole.Student)}")]
+        [HttpPut]
+        public async Task<IActionResult> PutStudentTestAttempt(
+            Guid subjectId,
+            Guid topicId,
+            Guid studentId,
+            Guid testId,
+            Guid attemptId,
+            StudentTestAttemptModel studentTestAttemptModel)
+        {
+            await mediator.Send(new EditStudentTestAttemptCommand()
+            {
+                SubjectId = subjectId,
+                TopicId = topicId,
+                StudentId = studentId,
+                TestId = testId,
+                AttemptId = attemptId,
+                State = studentTestAttemptModel.State,
+            });
+
+            return Ok();
         }
     }
 }

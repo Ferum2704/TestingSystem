@@ -61,7 +61,8 @@ namespace Application.Mapping
             cfg.CreateMap<AddStudentTestAttemptCommand, StudentTestAttempt>()
                 .ForMember(dest => dest.Id, act => act.MapFrom(_ => Guid.NewGuid()))
                 .ForMember(dest => dest.State, act => act.MapFrom(_ => TestState.NotStarted))
-                .ForMember(dest => dest.StartedAt, act => act.MapFrom(_ => DateTime.UtcNow))
+                .ForMember(dest => dest.StartedAt, act => act.Ignore())
+                .ForMember(dest => dest.FinishedAt, act => act.Ignore())
                 .ForMember(dest => dest.Results, act => act.Ignore())
                 .ForMember(dest => dest.Student, act => act.Ignore())
                 .ForMember(dest => dest.Test, act => act.Ignore());

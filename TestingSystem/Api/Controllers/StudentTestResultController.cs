@@ -1,6 +1,8 @@
 ﻿using Application.Features.StudentTestResults.Put;
+using Application.Identitity;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Api.Models;
 
@@ -17,6 +19,7 @@ namespace Presentation.Api.Controllers
             this.mediator = mediator;
         }
 
+        [Authorize(Roles = $"{nameof(ApplicationUserRole.Student)}")]
         [HttpPut]
         public async Task<IActionResult> PutStudentTestResult(
             Guid subjectId,

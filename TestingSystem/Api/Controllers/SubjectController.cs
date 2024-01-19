@@ -35,7 +35,7 @@ namespace Presentation.Api.Controllers
             return Ok(createdSubject);
         }
 
-        //[Authorize(Roles = $"{nameof(ApplicationUserRole.Student)}")]
+        [Authorize(Roles = $"{nameof(ApplicationUserRole.Student)}")]
         [HttpGet]
         public async Task<IActionResult> GetAllSubjects()
         {

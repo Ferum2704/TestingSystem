@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Features.StudentTestAttempts.Add
 {
-    public class AddStudentTestAttemptCommand : IRequest<Guid>
+    public class AddStudentTestAttemptCommand : IRequest<IReadOnlyCollection<Guid>>
     {
         public Guid SubjectId { get; set; }
 

@@ -23,30 +23,41 @@ namespace Application.Features.StudentTestResults.Put
         {
             request.NotNull(nameof(request));
 
-            var studentResult = (await unitOfWork.StudentTestResultRepository
-                .GetAsync(x => x.StudentAttempt.Id == request.AttemptId && x.QuestionId == request.QuestionId, cancellationToken)).FirstOrDefault();
-            var question = await unitOfWork.QuestionRepository.GetByIdAsync(request.QuestionId);
+            var currentTestAttempt = await GetCurrentAttempt(request.TestId, request.StudentId);
 
-            if (studentResult is null)
+            if (currentTestAttempt != null)
             {
-                var newStudentResult = mapper.Map<StudentTestResult>(request);
-                newStudentResult.IsCorrect = question.CorrectAnswer == newStudentResult.Answer;
+                var studentResult = (await unitOfWork.StudentTestResultRepository
+                    .GetAsync(x => x.StudentAttemptId == currentTestAttempt.Id && x.QuestionId == request.QuestionId, cancellationToken)).FirstOrDefault();
+                var question = await unitOfWork.QuestionRepository.GetByIdAsync(request.QuestionId);
 
-                unitOfWork.StudentTestResultRepository.Add(newStudentResult);
-                await unitOfWork.SaveAsync();
+                if (studentResult is null)
+                {
+                    var newStudentResult = mapper.Map<StudentTestResult>(request);
+                    newStudentResult.IsCorrect = question.CorrectAnswer == newStudentResult.Answer;
+                    newStudentResult.StudentAttemptId = currentTestAttempt.Id;
 
-                return mapper.Map<StudentTestResultDTO>(newStudentResult);
+                    unitOfWork.StudentTestResultRepository.Add(newStudentResult);
+                    await unitOfWork.SaveAsync();
+
+                    return mapper.Map<StudentTestResultDTO>(newStudentResult);
+                }
+                else
+                {
+                    studentResult.Answer = (AnswerOption)request.Answer;
+                    studentResult.IsCorrect = question.CorrectAnswer == studentResult.Answer;
+
+                    unitOfWork.StudentTestResultRepository.Update(studentResult);
+                    await unitOfWork.SaveAsync();
+
+                    return mapper.Map<StudentTestResultDTO>(studentResult);
+                }
             }
-            else
-            {
-                studentResult.Answer = (AnswerOption)request.Answer;
-                studentResult.IsCorrect = question.CorrectAnswer == studentResult.Answer;
 
-                unitOfWork.StudentTestResultRepository.Update(studentResult);
-                await unitOfWork.SaveAsync();
-
-                return mapper.Map<StudentTestResultDTO>(studentResult);
-            }
+            return new StudentTestResultDTO();
         }
+
+        private async Task<StudentTestAttempt> GetCurrentAttempt(Guid testId, Guid studentId) =>
+            (await unitOfWork.StudentTestAttemptRepository.GetAsync(x => x.StudentId == studentId && x.TestId == testId && x.State == TestState.InProgress)).SingleOrDefault();
     }
 }

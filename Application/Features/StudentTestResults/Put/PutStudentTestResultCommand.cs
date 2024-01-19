@@ -17,8 +17,6 @@ namespace Application.Features.StudentTestResults.Put
 
         public Guid StudentId { get; set; }
 
-        public Guid AttemptId { get; set; }
-
         public AnswerOptionDTO Answer { get; set; }
     }
 }

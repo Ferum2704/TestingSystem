@@ -8,7 +8,7 @@ using Presentation.Api.Models;
 
 namespace Presentation.Api.Controllers
 {
-    [Route("api/testing-system/subjects/{subjectId}/topics/{topicId}/students/{studentId}/tests/{testId}/questions/{questionId}attempts/{attemptId}")]
+    [Route("api/testing-system/subjects/{subjectId}/topics/{topicId}/students/{studentId}/tests/{testId}/questions/{questionId}")]
     [ApiController]
     public class StudentTestResultController : ControllerBase
     {
@@ -27,7 +27,6 @@ namespace Presentation.Api.Controllers
             Guid studentId,
             Guid testId,
             Guid questionId,
-            Guid attemptId,
             StudentTestResultModel studentTestResultModel)
         {
             var studentTestResult = await mediator.Send(new PutStudentTestResultCommand()
@@ -37,7 +36,6 @@ namespace Presentation.Api.Controllers
                 StudentId = studentId,
                 TestId = testId,
                 QuestionId = questionId,
-                AttemptId = attemptId,
                 Answer = studentTestResultModel.Answer,
             });
 

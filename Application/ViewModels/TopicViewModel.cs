@@ -8,8 +8,8 @@ namespace Application.ViewModels
 
         public string Title { get; set; }
 
-        public ICollection<TopicTestViewModel> Tests { get; set; }
+        public IReadOnlyCollection<TopicTestViewModel> Tests { get; set; }
 
-        public ICollection<TopicQuestionViewModel> Questions { get; set; }
+        public IReadOnlyCollection<TopicQuestionViewModel> Questions { get; set; }
     }
 }

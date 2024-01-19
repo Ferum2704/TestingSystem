@@ -7,5 +7,7 @@
         public DateTime TestDate { get; set; }
 
         public string Name { get; set; }
+
+        public IReadOnlyCollection<Guid> QuestionIds { get; set; }
     }
 }

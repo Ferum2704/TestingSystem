@@ -8,6 +8,6 @@ namespace Application.ViewModels
 
         public string Name { get; set; }
 
-        public ICollection<Topic> Topics { get; set; }
+        public IReadOnlyCollection<TopicViewModel> Topics { get; set; }
     }
 }

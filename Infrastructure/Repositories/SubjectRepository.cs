@@ -13,11 +13,7 @@ namespace Infrastructure.Repositories
         {
         }
 
-        public new async Task<Subject?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-        {
-            IQueryable<Subject> query = dbSet.Include(x => x.Topics);
-
-            return await dbSet.SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
-        }
+        public new async Task<Subject?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+            await dbSet.Include(x => x.Topics).SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 }

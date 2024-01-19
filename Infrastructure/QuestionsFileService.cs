@@ -15,32 +15,36 @@ namespace Infrastructure
         {
             topicName.NotNull(nameof(topicName));
             questions.NotNull(nameof(questions));
+            var filePath = $"{ExecutionFolderPath}\\{FolderName}\\{topicName}.txt";
 
-            var content = File.ReadAllText($"{ExecutionFolderPath}\\{FolderName}\\{topicName}.txt");
-            var questionOptionsBlocks = content.Split(new string[] { "\n\n" }, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (var block in questionOptionsBlocks)
+            if (File.Exists(filePath))
             {
-                var lines = block.Split('\n');
-                var title = lines[0];
-                var question = questions.FirstOrDefault(x => x.Text == title);
-                if (question != null)
-                {
-                    for (int i = 1; i < lines.Length; i++)
-                    {
-                        var line = lines[i].Trim();
+                var content = File.ReadAllText(filePath);
+                var questionOptionsBlocks = content.Split(new string[] { "\n\n" }, StringSplitOptions.RemoveEmptyEntries);
 
-                        switch (line[..2])
+                foreach (var block in questionOptionsBlocks)
+                {
+                    var lines = block.Split('\n');
+                    var title = lines[0];
+                    var question = questions.FirstOrDefault(x => x.Text == title);
+                    if (question != null)
+                    {
+                        for (int i = 1; i < lines.Length; i++)
                         {
-                            case "а)":
-                                question.OptionA = line[2..].Trim();
-                                break;
-                            case "b)":
-                                question.OptionB = line[2..].Trim();
-                                break;
-                            case "c)":
-                                question.OptionC = line[2..].Trim();
-                                break;
+                            var line = lines[i].Trim();
+
+                            switch (line[..2])
+                            {
+                                case "а)":
+                                    question.OptionA = line[2..].Trim();
+                                    break;
+                                case "b)":
+                                    question.OptionB = line[2..].Trim();
+                                    break;
+                                case "c)":
+                                    question.OptionC = line[2..].Trim();
+                                    break;
+                            }
                         }
                     }
                 }

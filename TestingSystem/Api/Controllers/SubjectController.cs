@@ -35,13 +35,22 @@ namespace Presentation.Api.Controllers
             return Ok(createdSubject);
         }
 
-        [Authorize(Roles = $"{nameof(ApplicationUserRole.Student)}")]
+        //[Authorize(Roles = $"{nameof(ApplicationUserRole.Student)}")]
         [HttpGet]
         public async Task<IActionResult> GetAllSubjects()
         {
             var allSubjects = await mediator.Send(new GetAllSubjectsQuery());
 
             return Ok(allSubjects);
+        }
+
+        [Authorize(Roles = $"{nameof(ApplicationUserRole.Student)}, {nameof(ApplicationUserRole.Teacher)}")]
+        [HttpGet("{subjectId}")]
+        public async Task<IActionResult> GetSubjectDetails(Guid subjectId)
+        {
+            var subjectDetails = await mediator.Send(new GetSubjectDetailsQuery { Id = subjectId });
+
+            return Ok(subjectDetails);
         }
     }
 }

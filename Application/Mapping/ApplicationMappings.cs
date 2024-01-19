@@ -13,6 +13,7 @@ namespace Application.Mapping
     {
         public static void ConfigureAutoMapper(IMapperConfigurationExpression cfg)
         {
+            cfg.CreateMap<Subject, SubjectInfoViewModel>();
             cfg.CreateMap<Subject, SubjectViewModel>();
             cfg.CreateMap<Subject, SubjectDTO>();
             cfg.CreateMap<AddSubjectCommand, Subject>()
@@ -29,7 +30,17 @@ namespace Application.Mapping
                 .ForMember(dest => dest.Questions, act => act.Ignore())
                 .ForMember(dest => dest.Tests, act => act.Ignore());
 
-            cfg.CreateMap<Test, TopicTestViewModel>();
+            cfg.CreateMap<Test, TopicTestViewModel>()
+                .ForMember(dest => dest.QuestionIds, act => act.MapFrom(src => src.TestQuestions.Select(x => x.Id).ToList()))
+                .ForMember(dest => dest.QuestionIds, act => act.Ignore());
+            cfg.CreateMap<Test, TestDTO>();
+            cfg.CreateMap<AddTestCommand, Test>()
+                .ForMember(dest => dest.Id, act => act.MapFrom(_ => Guid.NewGuid()))
+                .ForMember(dest => dest.Topic, act => act.Ignore())
+                .ForMember(dest => dest.Students, act => act.Ignore())
+                .ForMember(dest => dest.TestQuestions, act => act.Ignore())
+                .ForMember(dest => dest.Questions, act => act.Ignore())
+                .ForMember(dest => dest.StudentsAttempts, act => act.Ignore());
 
             cfg.CreateMap<Question, TopicQuestionViewModel>();
             cfg.CreateMap<Question, QuestionDTO>();
@@ -43,15 +54,6 @@ namespace Application.Mapping
                 .ForMember(dest => dest.Id, act => act.MapFrom(_ => Guid.NewGuid()))
                 .ForMember(dest => dest.Test, act => act.Ignore())
                 .ForMember(dest => dest.Question, act => act.Ignore());
-
-            cfg.CreateMap<Test, TestDTO>();
-            cfg.CreateMap<AddTestCommand, Test>()
-                .ForMember(dest => dest.Id, act => act.MapFrom(_ => Guid.NewGuid()))
-                .ForMember(dest => dest.Topic, act => act.Ignore())
-                .ForMember(dest => dest.Students, act => act.Ignore())
-                .ForMember(dest => dest.TestQuestions, act => act.Ignore())
-                .ForMember(dest => dest.Questions, act => act.Ignore())
-                .ForMember(dest => dest.StudentsAttempts, act => act.Ignore());
         }
     }
 }

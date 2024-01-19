@@ -37,18 +37,24 @@ namespace Presentation.Api.Controllers
 
         [Authorize(Roles = $"{nameof(ApplicationUserRole.Student)}")]
         [HttpGet("{testId}/student")]
-        public async Task<IActionResult> GetStudentTestDetails(Guid testId)
+        public async Task<IActionResult> GetStudentTestDetails(
+            Guid subjectId,
+            Guid topicId,
+            Guid testId)
         {
-            var testDetails = await mediator.Send(new GetStudentTestDetailsQuery { TestId = testId });
+            var testDetails = await mediator.Send(new GetStudentTestDetailsQuery { SubjectId = subjectId, TopicId = topicId, TestId = testId });
 
             return Ok(testDetails);
         }
 
         [Authorize(Roles = $"{nameof(ApplicationUserRole.Teacher)}")]
         [HttpGet("{testId}/teacher")]
-        public async Task<IActionResult> GetTeacherTestDetails(Guid testId)
+        public async Task<IActionResult> GetTeacherTestDetails(
+            Guid subjectId,
+            Guid topicId,
+            Guid testId)
         {
-            var testDetails = await mediator.Send(new GetTeacherTestDetailsQuery { TestId = testId });
+            var testDetails = await mediator.Send(new GetTeacherTestDetailsQuery { SubjectId = subjectId, TopicId = topicId, TestId = testId });
 
             return Ok(testDetails);
         }

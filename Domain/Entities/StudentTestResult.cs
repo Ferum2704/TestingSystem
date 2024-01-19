@@ -15,7 +15,7 @@ namespace Domain.Entities
 
         public Question Question { get; set; }
 
-        public AnswerOption Answer { get; set; }
+        public AnswerOption? Answer { get; set; }
 
         public bool IsCorrect { get; set; }
     }

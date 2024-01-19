@@ -26,7 +26,7 @@ namespace Infrastructure.Configuration
             builder
                 .Property(x => x.Answer)
                 .HasConversion<string>()
-                .IsRequired();
+                .IsRequired(false);
         }
     }
 }

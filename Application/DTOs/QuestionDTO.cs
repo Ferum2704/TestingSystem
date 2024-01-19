@@ -1,4 +1,5 @@
-﻿using Domain.Enums;
+﻿using Application.DTOs.Enums;
+using Domain.Enums;
 
 namespace Application.DTOs
 {
@@ -14,6 +15,6 @@ namespace Application.DTOs
 
         public string OptionC { get; set; }
 
-        public AnswerOption CorrectAnswer { get; set; }
+        public AnswerOptionDTO CorrectAnswer { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Application.DTOs.Enums;
 using Domain.Enums;
 using MediatR;
 
@@ -18,6 +19,6 @@ namespace Application.Features.Questions.Add
 
         public string OptionC { get; set; }
 
-        public AnswerOption CorrectAnswer { get; set; }
+        public AnswerOptionDTO CorrectAnswer { get; set; }
     }
 }

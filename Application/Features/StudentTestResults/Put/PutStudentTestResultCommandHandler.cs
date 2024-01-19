@@ -3,6 +3,7 @@ using Application.DTOs;
 using Application.Utilities;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 
 namespace Application.Features.StudentTestResults.Put
@@ -38,7 +39,7 @@ namespace Application.Features.StudentTestResults.Put
             }
             else
             {
-                studentResult.Answer = request.Answer;
+                studentResult.Answer = (AnswerOption)request.Answer;
                 studentResult.IsCorrect = question.CorrectAnswer == studentResult.Answer;
 
                 unitOfWork.StudentTestResultRepository.Update(studentResult);

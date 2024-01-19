@@ -1,9 +1,10 @@
-﻿using Domain.Enums;
+﻿using Application.DTOs.Enums;
+using Domain.Enums;
 
 namespace Presentation.Api.Models
 {
     public class StudentTestResultModel
     {
-        public AnswerOption Answer { get; set; }
+        public AnswerOptionDTO Answer { get; set; }
     }
 }

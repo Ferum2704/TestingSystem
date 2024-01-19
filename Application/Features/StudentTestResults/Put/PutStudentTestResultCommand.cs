@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Application.DTOs.Enums;
 using Domain.Enums;
 using MediatR;
 
@@ -18,6 +19,6 @@ namespace Application.Features.StudentTestResults.Put
 
         public Guid AttemptId { get; set; }
 
-        public AnswerOption Answer { get; set; }
+        public AnswerOptionDTO Answer { get; set; }
     }
 }

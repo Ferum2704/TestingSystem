@@ -24,7 +24,7 @@ namespace Application.Features.StudentTestAttempts.Add
             var test = await unitOfWork.TestRepository.GetByIdAsync(request.TestId, cancellationToken);
             var createdAttemptsIds = new List<Guid>();
 
-            for (int i = 1; i < test.NumberOfAttempts; i++)
+            for (int i = 1; i <= test.NumberOfAttempts; i++)
             {
                 var studentAttempt = mapper.Map<StudentTestAttempt>(request);
                 studentAttempt.NumberOfAttemt = i;

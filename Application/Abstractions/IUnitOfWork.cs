@@ -20,6 +20,8 @@ namespace Application.Abstractions
 
         IStudentTestResultRepository StudentTestResultRepository { get; }
 
+        ITestQuestionRepository TestQuestionRepository { get; }
+
         Task SaveAsync();
     }
 }

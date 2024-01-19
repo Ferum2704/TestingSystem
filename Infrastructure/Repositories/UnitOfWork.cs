@@ -17,6 +17,7 @@ namespace Infrastructure.Repositories
         private IStudentRepository studentRepository;
         private IStudentTestAttemptRepository studentTestAttemptRepository;
         private IStudentTestResultRepository studentTestResultRepository;
+        private ITestQuestionRepository testQuestionRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -25,19 +26,21 @@ namespace Infrastructure.Repositories
 
         public IStudentTestResultRepository StudentTestResultRepository => studentTestResultRepository ??= new StudentTestResultRepository(context);
 
-        ITeacherRepository IUnitOfWork.TeacherRepository => teacherRepository ??= new TeacherRepository(context);
+        public ITeacherRepository TeacherRepository => teacherRepository ??= new TeacherRepository(context);
 
-        ISubjectRepository IUnitOfWork.SubjectRepository => subjectRepository ??= new SubjectRepository(context);
+        public ISubjectRepository SubjectRepository => subjectRepository ??= new SubjectRepository(context);
 
-        ITopicRepository IUnitOfWork.TopicRepository => topicRepository ??= new TopicRepository(context);
+        public ITopicRepository TopicRepository => topicRepository ??= new TopicRepository(context);
 
-        ITestRepository IUnitOfWork.TestRepository => testRepository ??= new TestRepository(context);
+        public ITestRepository TestRepository => testRepository ??= new TestRepository(context);
 
-        IQuestionRepository IUnitOfWork.QuestionRepository => questionRepository ??= new QuestionRepository(context);
+        public IQuestionRepository QuestionRepository => questionRepository ??= new QuestionRepository(context);
 
-        IStudentRepository IUnitOfWork.StudentRepository => studentRepository ??= new StudentRepository(context);
+        public IStudentRepository StudentRepository => studentRepository ??= new StudentRepository(context);
 
-        IStudentTestAttemptRepository IUnitOfWork.StudentTestAttemptRepository => studentTestAttemptRepository ??= new StudentTestAttemptRepository(context);
+        public IStudentTestAttemptRepository StudentTestAttemptRepository => studentTestAttemptRepository ??= new StudentTestAttemptRepository(context);
+
+        public ITestQuestionRepository TestQuestionRepository => testQuestionRepository ??= new TestQuestionRepository(context);
 
         public async Task SaveAsync()
         {

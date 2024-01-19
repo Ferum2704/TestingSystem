@@ -11,7 +11,5 @@
         public int Duration { get; set; }
 
         public int NumberOfAttempts { get; set; }
-
-        public IReadOnlyCollection<Guid> QuestionIds { get; set; }
     }
 }

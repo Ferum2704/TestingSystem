@@ -7,6 +7,7 @@ using Application.Features.Tests.Add;
 using Application.Features.Topics.Add;
 using Application.ViewModels;
 using Application.ViewModels.QuestionVMs;
+using Application.ViewModels.StudentVMs;
 using Application.ViewModels.SubjectVMs;
 using Application.ViewModels.TestVMs;
 using AutoMapper;
@@ -35,8 +36,7 @@ namespace Application.Mapping
                 .ForMember(dest => dest.Questions, act => act.Ignore())
                 .ForMember(dest => dest.Tests, act => act.Ignore());
 
-            cfg.CreateMap<Test, TopicTestViewModel>()
-                .ForMember(dest => dest.QuestionIds, act => act.MapFrom(src => src.TestQuestions.Select(x => x.Id).ToList()));
+            cfg.CreateMap<Test, TopicTestViewModel>();
             cfg.CreateMap<Test, TestDTO>();
             cfg.CreateMap<AddTestCommand, Test>()
                 .ForMember(dest => dest.Id, act => act.MapFrom(_ => Guid.NewGuid()))

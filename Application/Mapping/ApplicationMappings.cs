@@ -1,11 +1,13 @@
 ﻿using Application.DTOs;
 using Application.Features.Questions.Add;
+using Application.Features.StudentTestAttempts.Add;
 using Application.Features.Subjects.Add;
 using Application.Features.Tests.Add;
 using Application.Features.Topics.Add;
 using Application.ViewModels;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 
 namespace Application.Mapping
 {
@@ -54,6 +56,14 @@ namespace Application.Mapping
                 .ForMember(dest => dest.Id, act => act.MapFrom(_ => Guid.NewGuid()))
                 .ForMember(dest => dest.Test, act => act.Ignore())
                 .ForMember(dest => dest.Question, act => act.Ignore());
+
+            cfg.CreateMap<AddStudentTestAttemptCommand, StudentTestAttempt>()
+                .ForMember(dest => dest.Id, act => act.MapFrom(_ => Guid.NewGuid()))
+                .ForMember(dest => dest.State, act => act.MapFrom(_ => TestState.InProgress))
+                .ForMember(dest => dest.StartedAt, act => act.MapFrom(_ => DateTime.UtcNow))
+                .ForMember(dest => dest.Results, act => act.Ignore())
+                .ForMember(dest => dest.Student, act => act.Ignore())
+                .ForMember(dest => dest.Test, act => act.Ignore());
         }
     }
 }

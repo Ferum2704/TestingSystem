@@ -2,7 +2,7 @@
 using AutoFixture;
 using AutoFixture.Xunit2;
 
-namespace Api.IntegrationTests
+namespace Api.IntegrationTests.AutoFixture
 {
     public class AutoMoqDataAttribute : AutoDataAttribute
     {
@@ -13,6 +13,7 @@ namespace Api.IntegrationTests
 
         private static IFixture CreateFixture(bool configureMockMembers)
             => new Fixture()
+                .Customize(new RecursiveObjectCustomization())
                 .Customize(new AutoMoqCustomization { ConfigureMembers = configureMockMembers });
     }
 }

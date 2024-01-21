@@ -152,5 +152,10 @@ namespace Infrastructure.Authentication
 
             return newUser;
         }
+
+        public async Task Revoke()
+        {
+            var 
+        }
     }
 }

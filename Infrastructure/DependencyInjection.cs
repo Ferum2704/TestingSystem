@@ -39,6 +39,7 @@ namespace Infrastructure
 
             services.AddTransient<IJwtProvider, JwtProvider>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ICurrentUserService, CurrentUserService>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IQuestionsFileService, QuestionsFileService>();
 

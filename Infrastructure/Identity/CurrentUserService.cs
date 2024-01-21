@@ -1,7 +1,8 @@
 ﻿using Application.Abstractions;
+using Application.Identitity;
 using Microsoft.AspNetCore.Http;
 
-namespace Application.Identitity
+namespace Infrastructure.Authentication
 {
     public class CurrentUserService : ICurrentUserService
     {

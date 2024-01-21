@@ -2,10 +2,12 @@
 {
     public static class ApiUrls
     {
-        public static string ApiBasePrefix => "api/testing-system";
+        public const string ApiBasePrefix = "api/testing-system";
 
-        public static string Login => $"/identity/login";
+        public const  string Login = $"/identity/login";
 
-        public static string Register => $"/identity/register";
+        public const string Register = $"/identity/register";
+
+        public const string Subjects = $"/subjects";
     }
 }

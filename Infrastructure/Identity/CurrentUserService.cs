@@ -13,6 +13,8 @@ namespace Infrastructure.Authentication
             this.httpContextAccessor = httpContextAccessor;
         }
 
+        public string CurrentUserUserName => httpContextAccessor.HttpContext?.User?.Identity?.Name ?? string.Empty;
+
         public bool IsInRole(ApplicationUserRole applicationRole)
         {
             var user = httpContextAccessor.HttpContext.User;

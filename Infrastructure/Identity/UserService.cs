@@ -15,17 +15,20 @@ namespace Infrastructure.Authentication
         private readonly RoleManager<ApplicationRole> roleManager;
         private readonly IJwtProvider jwtProvider;
         private readonly IUnitOfWork unitOfWork;
+        private readonly ICurrentUserService currentUserService;
 
         public UserService(
             UserManager<ApplicationUser> userManager,
             RoleManager<ApplicationRole> roleManager,
             IJwtProvider jwtProvider,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            ICurrentUserService currentUserService)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.jwtProvider = jwtProvider;
             this.unitOfWork = unitOfWork;
+            this.currentUserService = currentUserService;
         }
 
         public async Task<TokenViewModel> Login(LoginDTO userToLogin)
@@ -129,6 +132,16 @@ namespace Infrastructure.Authentication
             return newAccessToken;
         }
 
+        public async Task Revoke()
+        {
+            var user = await userManager.FindByNameAsync(currentUserService.CurrentUserUserName);
+
+            user.RefreshToken = null;
+            user.RefreshTokenExpiryTime = null;
+
+            await userManager.UpdateAsync(user);
+        }
+
         private static ApplicationUser InitializeNewUser(RegistrationDTO userToRegister)
         {
             var newUser = new ApplicationUser
@@ -151,11 +164,6 @@ namespace Infrastructure.Authentication
             }
 
             return newUser;
-        }
-
-        public async Task Revoke()
-        {
-            var 
         }
     }
 }

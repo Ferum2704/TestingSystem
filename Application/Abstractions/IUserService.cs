@@ -5,10 +5,12 @@ namespace Application.Abstractions
 {
     public interface IUserService
     {
-        public Task<TokenViewModel> Login(LoginDTO loginModel);
+        Task<TokenViewModel> Login(LoginDTO loginModel);
 
-        public Task<bool> Register(RegistrationDTO registrationModel);
+        Task<bool> Register(RegistrationDTO registrationModel);
 
-        public Task<string> RefreshToken(TokenDTO tokensModel);
+        Task<string> RefreshToken(TokenDTO tokensModel);
+
+        Task Revoke();
     }
 }

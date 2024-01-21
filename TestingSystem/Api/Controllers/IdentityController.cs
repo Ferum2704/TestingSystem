@@ -2,6 +2,7 @@
 using Application.DTOs;
 using Application.Identitity;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Api.Models;
@@ -56,6 +57,16 @@ namespace Presentation.Api.Controllers
             }
 
             return Ok(newAccessToken);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("revoke")]
+        public async Task<IActionResult> Revoke()
+        {
+            await userService.Revoke();
+
+            return NoContent();
         }
     }
 }

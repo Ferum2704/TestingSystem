@@ -1,4 +1,5 @@
 ﻿using Application.Identitity;
+using Domain.Entities;
 
 namespace Application.Abstractions
 {
@@ -7,5 +8,7 @@ namespace Application.Abstractions
         string CurrentUserUserName { get; }
 
         bool IsInRole(ApplicationUserRole applicationRole);
+
+        Task<DomainUser> GetCurrentDomainUserAsync();
     }
 }

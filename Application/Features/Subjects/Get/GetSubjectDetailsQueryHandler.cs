@@ -5,8 +5,6 @@ using Application.ViewModels.SubjectVMs;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
 
 namespace Application.Features.Subjects.Get
 {
@@ -40,22 +38,43 @@ namespace Application.Features.Subjects.Get
                 return null;
             }
 
-            await subject.Topics.ForEachAsync(MapTestsAndQuestions);
+            await subject.Topics.ForEachAsync(MapTestsAndQuestionsAsync);
 
             var subjectViewModel = mapper.Map<SubjectViewModel>(subject);
 
             return subjectViewModel;
         }
 
-        private async Task MapTestsAndQuestions(Topic topic)
+        private async Task MapTestsAndQuestionsAsync(Topic topic)
+        {
+
+            await MapQuestions(topic);
+            await MapTests(topic);
+        }
+
+        private async Task MapQuestions(Topic topic)
         {
             if (currentUserService.IsInRole(ApplicationUserRole.Teacher))
             {
                 topic.Questions = await unitOfWork.QuestionRepository.GetAsync(x => x.TopicId == topic.Id);
                 questionFileService.ParseTopicQuestions(topic.Title, topic.Questions);
             }
+        }
 
-            topic.Tests = await unitOfWork.TestRepository.GetAsync(x => x.TopicId == topic.Id);
+        private async Task MapTests(Topic topic)
+        {
+            if (currentUserService.IsInRole(ApplicationUserRole.Student))
+            {
+                var domainUser = await currentUserService.GetCurrentDomainUserAsync();
+                var student = await unitOfWork.StudentRepository.GetByIdAsync(domainUser.Id);
+                var studentTestAttemptsIds = student.TestsAttempts.Select(x => x.TestId).Distinct().ToList();
+
+                topic.Tests = await unitOfWork.TestRepository.GetAsync(x => x.TopicId == topic.Id && studentTestAttemptsIds.Contains(x.Id));
+            }
+            else
+            {
+                topic.Tests = await unitOfWork.TestRepository.GetAsync(x => x.TopicId == topic.Id);
+            }
         }
     }
 }

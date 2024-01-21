@@ -32,7 +32,7 @@ namespace Presentation.Api.Controllers
 
             var createdSubject = await mediator.Send(addSubjectCommand);
 
-            return CreatedAtRoute(nameof(GetSubjectDetails), new { id = createdSubject.Id }, createdSubject);
+            return CreatedAtAction(nameof(GetSubjectDetails), new { subjectId = createdSubject.Id }, createdSubject);
         }
 
         [Authorize(Roles = $"{nameof(ApplicationUserRole.Student)}")]

@@ -22,23 +22,22 @@ namespace Api.IntegrationTests.ControllersTests
             Subject subject,
             TopicModel topicModel)
         {
-            await PrepareTestData(subject);
+            using var scope = WebApplicationFactory.CreateScope();
+            await PrepareTestData(scope, subject);
             var formattedUrl = string.Format(ApiUrls.PostTopic, subject.Id);
 
             var createdTopic = await PostAsync<TopicDTO, TopicModel>(formattedUrl, topicModel, TeacherTestUsername, TeacherTestUsernamePassword);
 
             createdTopic.Should().NotBeNull();
             createdTopic.Title.Should().Be(topicModel.Title);
-
-            using var scope = WebApplicationFactory.CreateScope();
+            
             var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
             var topic = await unitOfWork.TopicRepository.GetByIdAsync(createdTopic.Id);
             topic.Should().NotBeNull();
         }
 
-        private async Task PrepareTestData(Subject subject)
+        private async Task PrepareTestData(IServiceScope scope, Subject subject)
         {
-            using var scope = WebApplicationFactory.CreateScope();
             var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
             var domainUserId = await PrepareTestUsers(false);
 

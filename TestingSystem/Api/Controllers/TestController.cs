@@ -11,7 +11,7 @@ using Presentation.Api.Models;
 
 namespace Presentation.Api.Controllers
 {
-    [Route("api/subjects/{subjectId}/topics/{topicId}/tests")]
+    [Route("api/testing-system/subjects/{subjectId}/topics/{topicId}/tests")]
     [ApiController]
     public class TestController : ControllerBase
     {

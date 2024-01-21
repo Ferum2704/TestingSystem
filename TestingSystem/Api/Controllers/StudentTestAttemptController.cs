@@ -1,10 +1,7 @@
 ﻿using Application.Features.StudentTestAttempts.Add;
-using Application.Features.StudentTestAttempts.Edit;
 using Application.Identitity;
-using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Api.Models;
 

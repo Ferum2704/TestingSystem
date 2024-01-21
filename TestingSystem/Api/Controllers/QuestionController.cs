@@ -8,7 +8,7 @@ using Presentation.Api.Models;
 
 namespace Presentation.Api.Controllers
 {
-    [Route("api/subjects/{subjectId}/topics{topicId}")]
+    [Route("api/testing-system/subjects/{subjectId}/topics{topicId}")]
     [ApiController]
     public class QuestionController : ControllerBase
     {

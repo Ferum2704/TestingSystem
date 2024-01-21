@@ -1,6 +1,5 @@
 ﻿using Application.Features.StudentTestResults.Put;
 using Application.Identitity;
-using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

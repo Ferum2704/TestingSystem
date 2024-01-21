@@ -4,7 +4,7 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
-namespace Infrastructure.Authentication
+namespace Infrastructure.Identity
 {
     public class CurrentUserService : ICurrentUserService
     {

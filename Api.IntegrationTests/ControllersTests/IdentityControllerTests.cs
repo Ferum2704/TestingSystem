@@ -1,5 +1,6 @@
 ﻿using Api.IntegrationTests.AutoFixture;
 using Application.Abstractions;
+using Application.DTOs;
 using Application.Identitity;
 using Application.ViewModels;
 using AutoFixture;
@@ -24,7 +25,7 @@ namespace Api.IntegrationTests.ControllersTests
         }
 
         [Theory, AutoMoqData]
-        public async Task Register_ShouldRegisterAsTeacher(RegistrationModel registrationModel)
+        public async Task Register_ShouldRegisterAsTeacher(RegistrationDTO registrationModel)
         {
             registrationModel.Role = ApplicationUserRole.Teacher;
 
@@ -34,7 +35,7 @@ namespace Api.IntegrationTests.ControllersTests
         }
 
         [Theory, AutoMoqData]
-        public async Task Register_ShouldRegisterAsStudent(RegistrationModel registrationModel)
+        public async Task Register_ShouldRegisterAsStudent(RegistrationDTO registrationModel)
         {
             registrationModel.Role = ApplicationUserRole.Student;
 
@@ -48,17 +49,17 @@ namespace Api.IntegrationTests.ControllersTests
         {
             await PrepareTestData(true);
 
-            var loginModel = new LoginModel
+            var LoginDTO = new LoginDTO
             {
                 Username = StudentTestUsername,
                 Password = StudentTestUsernamePassword,
             };
 
-            var tokenViewModel = await PostAsync<TokenViewModel, LoginModel>($"{ApiUrls.Login}", loginModel, isAuthorizationRequired: false);
+            var tokenViewModel = await PostAsync<TokenViewModel, LoginDTO>($"{ApiUrls.Login}", LoginDTO, isAuthorizationRequired: false);
 
             tokenViewModel.Should().NotBeNull();
-            tokenViewModel.AccessToken.Should().NotBeNull();
-            tokenViewModel.RefreshToken.Should().NotBeNull();
+            tokenViewModel.Tokens.AccessToken.Should().NotBeNull();
+            tokenViewModel.Tokens.RefreshToken.Should().NotBeNull();
             tokenViewModel.DomainUserId.Should().NotBeNull();
         }
 
@@ -67,17 +68,17 @@ namespace Api.IntegrationTests.ControllersTests
         {
             await PrepareTestData(false);
 
-            var loginModel = new LoginModel
+            var LoginDTO = new LoginDTO
             {
                 Username = TeacherTestUsername,
                 Password = TeacherTestUsernamePassword,
             };
 
-            var tokenViewModel = await PostAsync<TokenViewModel, LoginModel>($"{ApiUrls.Login}", loginModel, isAuthorizationRequired: false);
+            var tokenViewModel = await PostAsync<TokenViewModel, LoginDTO>($"{ApiUrls.Login}", LoginDTO, isAuthorizationRequired: false);
 
             tokenViewModel.Should().NotBeNull();
-            tokenViewModel.AccessToken.Should().NotBeNull();
-            tokenViewModel.RefreshToken.Should().NotBeNull();
+            tokenViewModel.Tokens.AccessToken.Should().NotBeNull();
+            tokenViewModel.Tokens.RefreshToken.Should().NotBeNull();
             tokenViewModel.DomainUserId.Should().NotBeNull();
         }
 

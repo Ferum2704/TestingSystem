@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Authentication
+﻿namespace Infrastructure.Identity
 {
     public class JwtOptions
     {

@@ -1,4 +1,5 @@
-﻿using Presentation.Api.Models;
+﻿using Application.DTOs;
+using Presentation.Api.Models;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
@@ -50,7 +51,7 @@ namespace Api.IntegrationTests
 
         private async Task<AuthorizationToken> GetAuthorizationToken(string userLogin, string userPassword)
         {
-            var response = await httpClient.PostAsJsonAsync(ApiUrls.Login, new LoginModel { Username = userLogin, Password = userPassword });
+            var response = await httpClient.PostAsJsonAsync(ApiUrls.Login, new LoginDTO { Username = userLogin, Password = userPassword });
 
             response.EnsureSuccessStatusCode();
 

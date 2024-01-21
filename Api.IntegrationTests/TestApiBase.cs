@@ -59,7 +59,7 @@ namespace Api.IntegrationTests
             return await response.Content.ReadFromJsonAsync<TResponse>();
         }
 
-        protected async Task PrepareTestUsers(bool isStudent)
+        protected async Task<Guid> PrepareTestUsers(bool isStudent)
         {
             using var scope = WebApplicationFactory.CreateScope();
 
@@ -85,7 +85,8 @@ namespace Api.IntegrationTests
             await userManager.AddToRoleAsync(appUser, isStudent ? ApplicationUserRole.Student.ToString() : ApplicationUserRole.Teacher.ToString());
 
             DomainUser domainUser = isStudent ? new Student() : new Teacher();
-            domainUser.Id = Guid.NewGuid();
+            var domainUserId = Guid.NewGuid();
+            domainUser.Id = domainUserId;
             domainUser.Name = "Joe";
             domainUser.Surname = "Gomes";
             domainUser.ApplicationUserId = appUser.Id;
@@ -100,6 +101,8 @@ namespace Api.IntegrationTests
             }
 
             await unitOfWork.SaveAsync();
+
+            return domainUserId;
         }
 
         private async Task<TokenViewModel> GetAuthorizationToken(string userLogin, string userPassword)

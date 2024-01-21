@@ -8,6 +8,8 @@
 
         public const string Register = $"/identity/register";
 
-        public const string Subjects = $"/subjects";
+        public const string PostSubject = $"/subjects";
+
+        public const string PostTopic = "/subjects/{0}/topics";
     }
 }

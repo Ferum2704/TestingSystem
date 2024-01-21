@@ -14,6 +14,7 @@ namespace Api.IntegrationTests.AutoFixture
         private static IFixture CreateFixture(bool configureMockMembers)
             => new Fixture()
                 .Customize(new RecursiveObjectCustomization())
+                .Customize(new TestingSystemCompositeCustomization())
                 .Customize(new AutoMoqCustomization { ConfigureMembers = configureMockMembers });
     }
 }

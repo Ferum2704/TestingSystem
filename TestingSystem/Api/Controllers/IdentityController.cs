@@ -27,7 +27,7 @@ namespace Presentation.Api.Controllers
         {
             var tokenModel = await userService.Login(loginModel);
 
-            if (string.IsNullOrEmpty(tokenModel.AccessToken) || string.IsNullOrEmpty(tokenModel.RefreshToken))
+            if (string.IsNullOrEmpty(tokenModel.Tokens.AccessToken) || string.IsNullOrEmpty(tokenModel.Tokens.AccessToken))
             {
                 return Unauthorized();
             }
@@ -42,6 +42,20 @@ namespace Presentation.Api.Controllers
             var isSuccessful = await userService.Register(registrationModel);
 
             return Ok(isSuccessful);
+        }
+
+        [HttpPost]
+        [Route("refresh")]
+        public async Task<IActionResult> Refresh(TokenDTO tokensModel)
+        {
+            var newAccessToken = await userService.RefreshToken(tokensModel);
+
+            if (string.IsNullOrEmpty(newAccessToken))
+            {
+                return BadRequest("Provided token are invalid");
+            }
+
+            return Ok(newAccessToken);
         }
     }
 }

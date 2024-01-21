@@ -1,8 +1,4 @@
-﻿using Application.Abstractions;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-
-namespace Infrastructure.Authentication
+﻿namespace Infrastructure.Authentication
 {
     public class JwtOptions
     {
@@ -12,8 +8,8 @@ namespace Infrastructure.Authentication
 
         public string SecretKey { get; init; }
 
-        public string AccessTokenExpirationTimeInMinutes { get; init; }
+        public int AccessTokenExpirationTimeInMinutes { get; init; }
 
-        public string RefreshTokenExpirationTimeInDays { get; init; }
+        public int RefreshTokenExpirationTimeInDays { get; init; }
     }
 }

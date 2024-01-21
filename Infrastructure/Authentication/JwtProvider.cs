@@ -1,12 +1,8 @@
 ﻿using Application.Abstractions;
-using Application.Identitity;
 using Application.Utilities;
 using Domain.Entities;
-using Domain.Enums;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -33,12 +29,11 @@ namespace Infrastructure.Authentication
                 new (ClaimTypes.Role, userRole)];
 
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey));
-            _ = int.TryParse(jwtOptions.AccessTokenExpirationTimeInMinutes, out int tokenExpirationTimeInMinutes);
 
             var token = new JwtSecurityToken(
                 issuer: jwtOptions.Issuer,
                 audience: jwtOptions.Audience,
-                expires: DateTime.Now.AddMinutes(tokenExpirationTimeInMinutes),
+                expires: DateTime.Now.AddMinutes(jwtOptions.AccessTokenExpirationTimeInMinutes),
                 claims: claims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256));
 
@@ -47,12 +42,12 @@ namespace Infrastructure.Authentication
             return tokenHandler.WriteToken(token);
         }
 
-        public string GetRefreshToken()
+        public (string Token, int ValidDays) GetRefreshToken()
         {
             var randomNumber = new byte[32];
             using var rng = RandomNumberGenerator.Create();
             rng.GetBytes(randomNumber);
-            return Convert.ToBase64String(randomNumber);
+            return (Convert.ToBase64String(randomNumber), jwtOptions.RefreshTokenExpirationTimeInDays);
         }
 
         public ClaimsPrincipal GetPrincipalFromExpiredToken(string accessToken)

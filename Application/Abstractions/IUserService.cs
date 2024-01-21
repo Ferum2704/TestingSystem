@@ -8,5 +8,7 @@ namespace Application.Abstractions
         public Task<TokenViewModel> Login(LoginDTO loginModel);
 
         public Task<bool> Register(RegistrationDTO registrationModel);
+
+        public Task<string> RefreshToken(TokenDTO tokensModel);
     }
 }

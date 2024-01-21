@@ -8,7 +8,7 @@ namespace Application.Abstractions
     {
         public string GetAccessToken(ApplicationUser user, string userRole);
 
-        public string GetRefreshToken();
+        public (string Token, int ValidDays) GetRefreshToken();
 
         public ClaimsPrincipal GetPrincipalFromExpiredToken(string accessToken);
     }

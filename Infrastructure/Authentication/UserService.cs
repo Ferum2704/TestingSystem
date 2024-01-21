@@ -5,6 +5,7 @@ using Application.Utilities;
 using Application.ViewModels;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace Infrastructure.Authentication
 {
@@ -33,8 +34,11 @@ namespace Infrastructure.Authentication
 
             var tokenViewModel = new TokenViewModel
             {
-                AccessToken = string.Empty,
-                RefreshToken = string.Empty,
+                Tokens = new TokenDTO
+                {
+                    AccessToken = string.Empty,
+                    RefreshToken = string.Empty,
+                },
             };
 
             var user = await userManager.FindByNameAsync(userToLogin.Username);
@@ -44,8 +48,13 @@ namespace Infrastructure.Authentication
 
                 if (userRole != null)
                 {
-                    tokenViewModel.AccessToken = jwtProvider.GetAccessToken(user, userRole);
-                    tokenViewModel.RefreshToken = jwtProvider.GetRefreshToken();
+                    tokenViewModel.Tokens.AccessToken = jwtProvider.GetAccessToken(user, userRole);
+                    var (refreshToken, refreshTokenValidDays) = jwtProvider.GetRefreshToken();
+
+                    tokenViewModel.Tokens.RefreshToken = refreshToken;
+                    user.RefreshToken = refreshToken;
+                    user.RefreshTokenExpiryTime = DateTime.Now.AddDays(refreshTokenValidDays);
+                    await userManager.UpdateAsync(user);
                 }
 
                 if (user.DomainUser is not null)
@@ -95,6 +104,29 @@ namespace Infrastructure.Authentication
             }
 
             return true;
+        }
+
+        public async Task<string> RefreshToken(TokenDTO tokensModel)
+        {
+            tokensModel.NotNull(nameof(tokensModel));
+
+            var principal = jwtProvider.GetPrincipalFromExpiredToken(tokensModel.AccessToken);
+
+            if (principal is null)
+            {
+                return string.Empty;
+            }
+
+            var user = await userManager.FindByNameAsync(principal.Identity.Name);
+
+            if (user is null || user.RefreshToken != tokensModel.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
+            {
+                return string.Empty;
+            }
+
+            var newAccessToken = jwtProvider.GetAccessToken(user, principal.FindFirst(ClaimTypes.Role).Value);
+
+            return newAccessToken;
         }
 
         private static ApplicationUser InitializeNewUser(RegistrationDTO userToRegister)

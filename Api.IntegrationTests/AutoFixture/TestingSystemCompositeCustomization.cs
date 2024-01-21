@@ -6,7 +6,10 @@ namespace Api.IntegrationTests.AutoFixture
     {
         public TestingSystemCompositeCustomization() 
             : base(
-                  new SubjectCustomization())
+                  new SubjectCustomization(),
+                  new TopicCustomization(),
+                  new QuestionCustomization(),
+                  new TestCustomization())
         {
         }
     }

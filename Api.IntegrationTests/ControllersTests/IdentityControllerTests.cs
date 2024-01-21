@@ -39,7 +39,8 @@ namespace Api.IntegrationTests.ControllersTests
         [Fact]
         public async Task Login_ShouldLoginAsStudent()
         {
-            await PrepareTestUsers(true);
+            using var scope = WebApplicationFactory.CreateScope();
+            await PrepareTestUsers(scope, true);
 
             var LoginDTO = new LoginDTO
             {
@@ -58,7 +59,8 @@ namespace Api.IntegrationTests.ControllersTests
         [Fact]
         public async Task Login_ShouldLoginAsTeacher()
         {
-            await PrepareTestUsers(false);
+            using var scope = WebApplicationFactory.CreateScope();
+            await PrepareTestUsers(scope, false);
 
             var LoginDTO = new LoginDTO
             {

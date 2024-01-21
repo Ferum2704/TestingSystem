@@ -18,13 +18,13 @@ namespace Api.IntegrationTests.ControllersTests
 
         [Theory, AutoMoqData]
         public async Task PostQuestion_ShouldCreateQuestionToTopic(
-            Subject subject,
+            Subject subjectEntity,
             Topic topicEntity,
             QuestionModel questionModel)
         {
             using var scope = WebApplicationFactory.CreateScope();
-            await PrepareTestData(scope, topicEntity, subject);
-            var formattedUrl = string.Format(ApiUrls.PostQuestion, subject.Id, topicEntity.Id);
+            await PrepareTestData(scope, subjectEntity, topicEntity);
+            var formattedUrl = string.Format(ApiUrls.PostQuestion, subjectEntity.Id, topicEntity.Id);
 
             var createdQuestion = await PostAsync<QuestionDTO, QuestionModel>(formattedUrl, questionModel, TeacherTestUsername, TeacherTestUsernamePassword);
 
@@ -35,20 +35,54 @@ namespace Api.IntegrationTests.ControllersTests
             createdQuestion.OptionC.Should().Be(questionModel.OptionC);
 
             var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-            var topic = await unitOfWork.QuestionRepository.GetByIdAsync(createdQuestion.Id);
-            topic.Should().NotBeNull();
+            var question = await unitOfWork.QuestionRepository.GetByIdAsync(createdQuestion.Id);
+            question.Should().NotBeNull();
         }
 
-        private async Task PrepareTestData(IServiceScope scope, Topic topic, Subject subject)
+        [Theory, AutoMoqData]
+        public async Task PostQuestion_ShouldAddQuestionToTest(
+            Subject subjectEntity,
+            Topic topicEntity,
+            Test testEntity,
+            Question questionEntity,
+            TestQuestionModel testQuestionModel)
+        {
+            using var scope = WebApplicationFactory.CreateScope();
+            await PrepareTestData(scope, subjectEntity, topicEntity, testEntity, questionEntity);
+            testQuestionModel.QuestionId = questionEntity.Id;
+            var formattedUrl = string.Format(ApiUrls.PostTestQuestion, subjectEntity.Id, topicEntity.Id, testEntity.Id);
+
+            await PostAsync(formattedUrl, testQuestionModel, TeacherTestUsername, TeacherTestUsernamePassword);
+
+            var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+            var testQuestion = (await unitOfWork.TestQuestionRepository.GetAsync(x => x.TestId == testEntity.Id && x.QuestionId == questionEntity.Id)).FirstOrDefault();
+            testQuestion.Should().NotBeNull();
+        }
+
+        private async Task PrepareTestData(IServiceScope scope, Subject subject, Topic topic, Test test = null, Question question = null)
         {
             var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-            var domainUserId = await PrepareTestUsers(false);
+            var domainUserId = await PrepareTestUsers(scope, false);
 
             subject.TeacherId = domainUserId;
             topic.SubjectId = subject.Id;
             unitOfWork.SubjectRepository.Add(subject);
             unitOfWork.TopicRepository.Add(topic);
             await unitOfWork.SaveAsync();
+
+            if (test is not null)
+            {
+                test.TopicId = topic.Id;
+                unitOfWork.TestRepository.Add(test);
+                await unitOfWork.SaveAsync();
+            }
+
+            if (question is not null)
+            {
+                question.TopicId = topic.Id;
+                unitOfWork.QuestionRepository.Add(question);
+                await unitOfWork.SaveAsync();
+            }
         }
     }
 }

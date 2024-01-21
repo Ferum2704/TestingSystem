@@ -45,6 +45,18 @@ namespace Api.IntegrationTests
             string userPassword = null,
             bool isAuthorizationRequired = true)
         {
+            var response = await PostAsync<TRequest>(relativeURL, request, userLogin, userPassword, isAuthorizationRequired);
+
+            return await response.Content.ReadFromJsonAsync<TResponse>();
+        }
+
+        public async Task<HttpResponseMessage> PostAsync<TRequest>(
+            string relativeURL,
+            TRequest request,
+            string userLogin = null,
+            string userPassword = null,
+            bool isAuthorizationRequired = true)
+        {
             TokenViewModel token;
             if (isAuthorizationRequired)
             {
@@ -56,13 +68,11 @@ namespace Api.IntegrationTests
 
             response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadFromJsonAsync<TResponse>();
+            return response;
         }
 
-        protected async Task<Guid> PrepareTestUsers(bool isStudent)
+        protected async Task<Guid> PrepareTestUsers(IServiceScope scope, bool isStudent)
         {
-            using var scope = WebApplicationFactory.CreateScope();
-
             var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();

@@ -14,6 +14,8 @@
 
         public const string PostQuestion = "/subjects/{0}/topics{1}/questions";
 
+        public const string PostTestQuestion = "/subjects/{0}/topics{1}/tests/{2}";
+
         public const string PostTest = "/subjects/{0}/topics/{1}/tests";
     }
 }

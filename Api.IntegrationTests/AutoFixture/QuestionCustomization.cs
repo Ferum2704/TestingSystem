@@ -10,7 +10,8 @@ namespace Api.IntegrationTests.AutoFixture
             fixture.Customize<Question>(composer => composer
                 .Without(x => x.Tests)
                 .Without(x => x.Results)
-                .Without(x => x.Topic));
+                .Without(x => x.Topic)
+                .Without(x => x.TestQuestions));
         }
     }
 }

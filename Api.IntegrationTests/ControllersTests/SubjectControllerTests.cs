@@ -19,14 +19,14 @@ namespace Api.IntegrationTests.ControllersTests
         [Theory, AutoMoqData]
         public async Task PostSubject_ShouldCreateSubjectForTeacher(SubjectModel subjectModel)
         {
-            await PrepareTestUsers(false);
+            using var scope = WebApplicationFactory.CreateScope();
+            await PrepareTestUsers(scope, false);
 
             var createdSubject = await PostAsync<SubjectDTO, SubjectModel>(ApiUrls.PostSubject, subjectModel, TeacherTestUsername, TeacherTestUsernamePassword);
             
             createdSubject.Should().NotBeNull();
             createdSubject.Name.Should().Be(subjectModel.Name);
 
-            using var scope = WebApplicationFactory.CreateScope();
             var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
             var subject = await unitOfWork.SubjectRepository.GetByIdAsync(createdSubject.Id);
             subject.Should().NotBeNull();

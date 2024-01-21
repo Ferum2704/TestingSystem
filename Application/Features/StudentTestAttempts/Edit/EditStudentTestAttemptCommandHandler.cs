@@ -4,7 +4,6 @@ using Application.Utilities;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
-using System.Threading;
 
 namespace Application.Features.StudentTestAttempts.Edit
 {
@@ -51,7 +50,7 @@ namespace Application.Features.StudentTestAttempts.Edit
             var testAttempt = (await unitOfWork.StudentTestAttemptRepository
                 .GetAsync(x => x.TestId == request.TestId && x.StudentId == request.StudentId && x.State == TestState.InProgress, cancellationToken))
                 .SingleOrDefault();
-            CreateNotAnsweredResults(testAttempt);
+            await CreateNotAnsweredResults(testAttempt);
 
             testAttempt.State = TestState.Finished;
             testAttempt.FinishedAt = DateTime.UtcNow;
@@ -59,7 +58,7 @@ namespace Application.Features.StudentTestAttempts.Edit
             return testAttempt;
         }
 
-        private async void CreateNotAnsweredResults(StudentTestAttempt studentTestAttempt)
+        private async Task CreateNotAnsweredResults(StudentTestAttempt studentTestAttempt)
         {
             var answeredQuestionsIds = studentTestAttempt.Results.Select(x => x.QuestionId).ToList();
 
@@ -75,6 +74,7 @@ namespace Application.Features.StudentTestAttempts.Edit
                 };
 
                 unitOfWork.StudentTestResultRepository.Add(newResult);
+                await unitOfWork.SaveAsync();
             }
         }
     }

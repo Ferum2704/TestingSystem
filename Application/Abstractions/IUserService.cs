@@ -1,12 +1,12 @@
-﻿using Application.Identitity;
+﻿using Application.DTOs;
 using Application.ViewModels;
 
 namespace Application.Abstractions
 {
     public interface IUserService
     {
-        public Task<TokenViewModel> Login(LoginUser loginUser);
+        public Task<TokenViewModel> Login(LoginDTO loginModel);
 
-        public Task<bool> Register(RegisterUser registerUser);
+        public Task<bool> Register(RegistrationDTO registrationModel);
     }
 }

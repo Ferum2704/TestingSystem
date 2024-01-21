@@ -1,9 +1,8 @@
 ﻿using Application.Identitity;
-using Infrastructure.Authentication;
 
-namespace Presentation.Api.Models
+namespace Application.DTOs
 {
-    public class RegistrationModel
+    public class RegistrationDTO
     {
         public string Username { get; set; }
 

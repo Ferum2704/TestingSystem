@@ -2,7 +2,6 @@
 using Application.Features.Subjects.Add;
 using Application.Features.Tests.Add;
 using Application.Features.Topics.Add;
-using Application.Identitity;
 using Application.Mapping;
 using AutoMapper;
 using Presentation.Api.Models;
@@ -22,8 +21,6 @@ namespace Presentation.Configurations
 
         private static void Configure(IMapperConfigurationExpression cfg)
         {
-            cfg.CreateMap<RegistrationModel, RegisterUser>();
-            cfg.CreateMap<LoginModel, LoginUser>();
             cfg.CreateMap<SubjectModel, AddSubjectCommand>();
             cfg.CreateMap<TopicModel, AddTopicCommand>();
             cfg.CreateMap<QuestionModel, AddQuestionToTopicCommand>();

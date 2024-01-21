@@ -1,6 +1,6 @@
-﻿namespace Application.Identitity
+﻿namespace Application.DTOs
 {
-    public class LoginUser
+    public class LoginDTO
     {
         public string Username { get; set; }
 

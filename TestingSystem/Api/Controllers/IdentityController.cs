@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions;
+using Application.DTOs;
 using Application.Identitity;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -22,11 +23,9 @@ namespace Presentation.Api.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login(LoginModel loginModel)
+        public async Task<IActionResult> Login(LoginDTO loginModel)
         {
-            var loginUser = mapper.Map<LoginUser>(loginModel);
-
-            var tokenModel = await userService.Login(loginUser);
+            var tokenModel = await userService.Login(loginModel);
 
             if (string.IsNullOrEmpty(tokenModel.AccessToken) || string.IsNullOrEmpty(tokenModel.RefreshToken))
             {
@@ -38,11 +37,9 @@ namespace Presentation.Api.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register(RegistrationModel model)
+        public async Task<IActionResult> Register(RegistrationDTO registrationModel)
         {
-            var registerUser = mapper.Map<RegisterUser>(model);
-
-            var isSuccessful = await userService.Register(registerUser);
+            var isSuccessful = await userService.Register(registrationModel);
 
             return Ok(isSuccessful);
         }

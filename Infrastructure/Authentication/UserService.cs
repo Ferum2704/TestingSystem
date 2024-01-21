@@ -1,9 +1,9 @@
 ﻿using Application.Abstractions;
+using Application.DTOs;
 using Application.Identitity;
 using Application.Utilities;
 using Application.ViewModels;
 using Domain.Entities;
-using Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
 namespace Infrastructure.Authentication
@@ -27,7 +27,7 @@ namespace Infrastructure.Authentication
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<TokenViewModel> Login(LoginUser userToLogin)
+        public async Task<TokenViewModel> Login(LoginDTO userToLogin)
         {
             userToLogin.NotNull(nameof(userToLogin));
 
@@ -57,7 +57,7 @@ namespace Infrastructure.Authentication
             return tokenViewModel;
         }
 
-        public async Task<bool> Register(RegisterUser userToRegister)
+        public async Task<bool> Register(RegistrationDTO userToRegister)
         {
             userToRegister.NotNull(nameof(userToRegister));
 
@@ -97,7 +97,7 @@ namespace Infrastructure.Authentication
             return true;
         }
 
-        private static ApplicationUser InitializeNewUser(RegisterUser userToRegister)
+        private static ApplicationUser InitializeNewUser(RegistrationDTO userToRegister)
         {
             var newUser = new ApplicationUser
             {

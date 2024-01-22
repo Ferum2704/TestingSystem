@@ -72,6 +72,27 @@ namespace Api.IntegrationTests
             return response;
         }
 
+        public async Task<HttpResponseMessage> PutAsync<TRequest>(
+            string relativeURL,
+            TRequest request,
+            string userLogin = null,
+            string userPassword = null,
+            bool isAuthorizationRequired = true)
+        {
+            TokenViewModel token;
+            if (isAuthorizationRequired)
+            {
+                token = await GetAuthorizationToken(userLogin, userPassword);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Tokens.AccessToken);
+            }
+
+            var response = await httpClient.PutAsJsonAsync($"{ApiUrls.ApiBasePrefix}{relativeURL}", request);
+
+            response.EnsureSuccessStatusCode();
+
+            return response;
+        }
+
         protected async Task<(Guid TeacherId, Guid StudentId)> PrepareTestUsers(IServiceScope scope, bool isStudent, bool createBoth = false)
         {
             Guid teacherId = Guid.Empty;

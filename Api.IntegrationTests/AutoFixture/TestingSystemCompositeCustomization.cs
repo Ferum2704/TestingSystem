@@ -9,7 +9,8 @@ namespace Api.IntegrationTests.AutoFixture
                   new SubjectCustomization(),
                   new TopicCustomization(),
                   new QuestionCustomization(),
-                  new TestCustomization())
+                  new TestCustomization(),
+                  new StudentTestAttemptCustomization())
         {
         }
     }

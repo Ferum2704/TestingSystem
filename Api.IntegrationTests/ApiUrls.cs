@@ -18,6 +18,8 @@
 
         public const string PostTest = "/subjects/{0}/topics/{1}/tests";
 
+        public const string PutTest = "/subjects/{0}/topics/{1}/tests/{2}/students/{3}";
+
         public const string PostStudentAttempt = "/subjects/{0}/topics/{1}/tests/{2}/attempts";
     }
 }

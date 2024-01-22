@@ -90,7 +90,7 @@ namespace Api.IntegrationTests
             }
             else
             {
-                studentId = await CreateTeacher(scope);
+                teacherId = await CreateTeacher(scope);
             }
 
             return (teacherId, studentId);

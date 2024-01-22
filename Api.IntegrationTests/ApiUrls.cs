@@ -18,6 +18,6 @@
 
         public const string PostTest = "/subjects/{0}/topics/{1}/tests";
 
-        public const string PostStudentAttempt = "subjects/{0}/topics/{0}/tests/{0}/attempts";
+        public const string PostStudentAttempt = "/subjects/{0}/topics/{1}/tests/{2}/attempts";
     }
 }

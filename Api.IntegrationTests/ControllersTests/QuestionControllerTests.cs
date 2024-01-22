@@ -62,7 +62,7 @@ namespace Api.IntegrationTests.ControllersTests
         private async Task PrepareTestData(IServiceScope scope, Subject subject, Topic topic, Test test = null, Question question = null)
         {
             var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-            var domainUserId = await PrepareTestUsers(scope, false);
+            var (domainUserId, _) = await PrepareTestUsers(scope, false);
 
             subject.TeacherId = domainUserId;
             topic.SubjectId = subject.Id;

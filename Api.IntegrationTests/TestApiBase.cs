@@ -3,6 +3,7 @@ using Application.DTOs;
 using Application.Identitity;
 using Application.ViewModels;
 using Domain.Entities;
+using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Headers;
@@ -71,17 +72,72 @@ namespace Api.IntegrationTests
             return response;
         }
 
-        protected async Task<Guid> PrepareTestUsers(IServiceScope scope, bool isStudent)
+        protected async Task<(Guid TeacherId, Guid StudentId)> PrepareTestUsers(IServiceScope scope, bool isStudent, bool createBoth = false)
+        {
+            Guid teacherId = Guid.Empty;
+            Guid studentId = Guid.Empty;
+
+            if (createBoth)
+            {
+                studentId = await CreateStudent(scope);
+                teacherId = await CreateTeacher(scope);
+
+                return (teacherId, studentId);
+            }
+            else if (isStudent)
+            {
+                studentId = await CreateStudent(scope);
+            }
+            else
+            {
+                studentId = await CreateTeacher(scope);
+            }
+
+            return (teacherId, studentId);
+        }
+
+        private async Task<Guid> CreateStudent(IServiceScope scope)
         {
             var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+            var appUser = await CreateAppUser(scope, StudentTestUsername, StudentTestUsernamePassword, ApplicationUserRole.Student.ToString());
+            var student = new Student();
+            var studentId = Guid.NewGuid();
+            student.Id = studentId;
+            student.Name = "Bob";
+            student.Surname = "Gomes";
+            student.ApplicationUserId = appUser.Id;
+
+            unitOfWork.StudentRepository.Add(student);
+            await unitOfWork.SaveAsync();
+
+            return student.Id;
+        }
+
+        private async Task<Guid> CreateTeacher(IServiceScope scope)
+        {
+            var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+            var appUser = await CreateAppUser(scope, TeacherTestUsername, TeacherTestUsernamePassword, ApplicationUserRole.Teacher.ToString());
+            var teacher = new Teacher();
+            var teacherId = Guid.NewGuid();
+            teacher.Id = teacherId;
+            teacher.Name = "Bob";
+            teacher.Surname = "Gomes";
+            teacher.ApplicationUserId = appUser.Id;
+
+            unitOfWork.TeacherRepository.Add(teacher);
+            await unitOfWork.SaveAsync();
+
+            return teacher.Id;
+        }
+
+        private async Task<ApplicationUser> CreateAppUser(IServiceScope scope, string userName, string userPassword, string role)
+        {
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
 
-
-
             var appUser = new ApplicationUser
             {
-                UserName = isStudent ? StudentTestUsername : TeacherTestUsername,
+                UserName = userName,
                 ConcurrencyStamp = Guid.NewGuid().ToString(),
             };
 
@@ -89,30 +145,12 @@ namespace Api.IntegrationTests
             {
                 Id = Guid.NewGuid(),
                 ConcurrencyStamp = Guid.NewGuid().ToString(),
-                Name = isStudent ? ApplicationUserRole.Student.ToString() : ApplicationUserRole.Teacher.ToString(),
+                Name = role,
             });
-            await userManager.CreateAsync(appUser, isStudent ? StudentTestUsernamePassword : TeacherTestUsernamePassword);
-            await userManager.AddToRoleAsync(appUser, isStudent ? ApplicationUserRole.Student.ToString() : ApplicationUserRole.Teacher.ToString());
+            await userManager.CreateAsync(appUser, userPassword);
+            await userManager.AddToRoleAsync(appUser, role);
 
-            DomainUser domainUser = isStudent ? new Student() : new Teacher();
-            var domainUserId = Guid.NewGuid();
-            domainUser.Id = domainUserId;
-            domainUser.Name = "Joe";
-            domainUser.Surname = "Gomes";
-            domainUser.ApplicationUserId = appUser.Id;
-
-            if (isStudent)
-            {
-                unitOfWork.StudentRepository.Add((Student)domainUser);
-            }
-            else
-            {
-                unitOfWork.TeacherRepository.Add((Teacher)domainUser);
-            }
-
-            await unitOfWork.SaveAsync();
-
-            return domainUserId;
+            return appUser;
         }
 
         private async Task<TokenViewModel> GetAuthorizationToken(string userLogin, string userPassword)

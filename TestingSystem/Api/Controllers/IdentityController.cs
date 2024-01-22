@@ -9,7 +9,7 @@ using Presentation.Api.Models;
 
 namespace Presentation.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/testing-system/identity/")]
     [ApiController]
     public class IdentityController : ControllerBase
     {
@@ -41,6 +41,11 @@ namespace Presentation.Api.Controllers
         public async Task<IActionResult> Register(RegistrationDTO registrationModel)
         {
             var isSuccessful = await userService.Register(registrationModel);
+
+            if (!isSuccessful)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
 
             return Ok(isSuccessful);
         }

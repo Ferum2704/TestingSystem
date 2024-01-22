@@ -7,7 +7,7 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
-namespace Infrastructure.Authentication
+namespace Infrastructure.Identity
 {
     public class UserService : IUserService
     {

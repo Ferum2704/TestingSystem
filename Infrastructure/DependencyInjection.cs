@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions;
 using Domain.Entities;
 using Domain.Interfaces;
-using Infrastructure.Authentication;
+using Infrastructure.Identity;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

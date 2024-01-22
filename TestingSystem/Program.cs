@@ -1,12 +1,10 @@
 using Application;
 using Infrastructure;
-using Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Presentation.Configurations;
 using Presentation.OptionsSetup;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 

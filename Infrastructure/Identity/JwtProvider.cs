@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Infrastructure.Authentication
+namespace Infrastructure.Identity
 {
     public class JwtProvider : IJwtProvider
     {
@@ -24,9 +24,9 @@ namespace Infrastructure.Authentication
             user.NotNull(nameof(user));
             user.NotNull(nameof(userRole));
 
-            List<Claim> claims = [new (ClaimTypes.NameIdentifier, user.DomainUser is not null ? user.DomainUser.Id.ToString() : user.Id.ToString()),
-                new (ClaimTypes.Name, user.UserName),
-                new (ClaimTypes.Role, userRole)];
+            List<Claim> claims = [new(ClaimTypes.NameIdentifier, user.DomainUser is not null ? user.DomainUser.Id.ToString() : user.Id.ToString()),
+                new(ClaimTypes.Name, user.UserName),
+                new(ClaimTypes.Role, userRole)];
 
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey));
 
@@ -57,14 +57,19 @@ namespace Infrastructure.Authentication
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidateAudience = true,
-                ValidateIssuer = true,
-                ValidateIssuerSigningKey = true,
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = false,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey)),
                 ValidateLifetime = false,
             };
 
             var principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out SecurityToken securityToken);
+
+            if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new SecurityTokenException("Invalid token");
+            }
 
             return principal;
         }

@@ -22,7 +22,7 @@ namespace Presentation.Api.Controllers
         }
 
         [Authorize(Roles = $"{nameof(ApplicationUserRole.Teacher)}")]
-        [HttpPost]
+        [HttpPost("questions")]
         public async Task<IActionResult> PostQuestionToTopic(
             Guid subjectId,
             Guid topicId,
